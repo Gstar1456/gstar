@@ -16,7 +16,7 @@ export default function Analysis() {
   }, [])
 
   const getbackup= async()=>{
-    let backup= await fetch('http://localhost:10000/analysis/getbackup',{
+    let backup= await fetch('https://belk.onrender.com/analysis/getbackup',{
       method:'GET',
       headers:{'Content-Type':'application/json'}
     });
@@ -25,7 +25,7 @@ export default function Analysis() {
   }
 
   const getdata = async () => {
-    let data = await fetch('http://localhost:10000/analysis/getdata', {
+    let data = await fetch('https://belk.onrender.com/analysis/getdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -41,7 +41,7 @@ export default function Analysis() {
   }
 
   const getrowdata = async () => {
-    let data = await fetch('http://localhost:10000/analysis/getrowdata', {
+    let data = await fetch('https://belk.onrender.com/analysis/getrowdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })

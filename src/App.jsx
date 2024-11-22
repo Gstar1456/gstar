@@ -110,7 +110,7 @@ function App() {
     return `${minutes} m ${seconds} s`;
   };
   const getserialnumber = async () => {
-    let result = await fetch('http://localhost:10000/getserialnumber', {
+    let result = await fetch('https://belk.onrender.com/getserialnumber', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -130,7 +130,7 @@ function App() {
 
   const getinvurl = async () => {
     try {
-      let result = await fetch('http://localhost:10000/getinvurl', {
+      let result = await fetch('https://belk.onrender.com/getinvurl', {
         method: "GET",
         headers: { 'Content-Type': 'application/json' }
       })
@@ -150,7 +150,7 @@ function App() {
   };
   const geterrorurl = async () => {
     try {
-      let result = await fetch('http://localhost:10000/geterrorurl', {
+      let result = await fetch('https://belk.onrender.com/geterrorurl', {
         method: "GET",
         headers: { 'Content-Type': 'application/json' }
       })
@@ -171,7 +171,7 @@ function App() {
     const formData = new FormData();
     formData.append('file', invfile);
     try {
-      const response = await axios.post('http://localhost:10000/uploadinvfile', formData, {
+      const response = await axios.post('https://belk.onrender.com/uploadinvfile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -187,7 +187,7 @@ function App() {
     }
   };
   const settime = (time) => {
-    fetch('http://localhost:10000/settime', {
+    fetch('https://belk.onrender.com/settime', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ time: time + elapsedTime })
@@ -196,7 +196,7 @@ function App() {
   // ------setIndex----
   const setindex = async () => {
     const newIndex = parseInt(customIndex, 10);
-    let result = await fetch('http://localhost:10000/setindex', {
+    let result = await fetch('https://belk.onrender.com/setindex', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -208,7 +208,7 @@ function App() {
   };
   const setindex2 = async () => {
     const newIndex = parseInt(customIndex2, 10);
-    let result = await fetch('http://localhost:10000/setindex2', {
+    let result = await fetch('https://belk.onrender.com/setindex2', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -219,7 +219,7 @@ function App() {
   };
   const setindex3 = async () => {
     const newIndex = parseInt(customIndex3, 10);
-    let result = await fetch('http://localhost:10000/setindex3', {
+    let result = await fetch('https://belk.onrender.com/setindex3', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -230,7 +230,7 @@ function App() {
   };
   const setindex4 = async () => {
     const newIndex = parseInt(customIndex4, 10);
-    let result = await fetch('http://localhost:10000/setindex4', {
+    let result = await fetch('https://belk.onrender.com/setindex4', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -241,7 +241,7 @@ function App() {
   };
   const setindex5 = async () => {
     const newIndex = parseInt(customIndex5, 10);
-    let result = await fetch('http://localhost:10000/setindex5', {
+    let result = await fetch('https://belk.onrender.com/setindex5', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -252,7 +252,7 @@ function App() {
   };
   const setindex6 = async () => {
     const newIndex = parseInt(customIndex6, 10);
-    let result = await fetch('http://localhost:10000/setindex6', {
+    let result = await fetch('https://belk.onrender.com/setindex6', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -263,7 +263,7 @@ function App() {
   };
   const setindex7 = async () => {
     const newIndex = parseInt(customIndex7, 10);
-    let result = await fetch('http://localhost:10000/setindex7', {
+    let result = await fetch('https://belk.onrender.com/setindex7', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -274,7 +274,7 @@ function App() {
   };
   const setindex8 = async () => {
     const newIndex = parseInt(customIndex8, 10);
-    let result = await fetch('http://localhost:10000/setindex8', {
+    let result = await fetch('https://belk.onrender.com/setindex8', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -285,7 +285,7 @@ function App() {
   };
   const seterrorindex = async () => {
     const newIndex = parseInt(errorcustomIndex, 10);
-    let result = await fetch('http://localhost:10000/seterrorindex', {
+    let result = await fetch('https://belk.onrender.com/seterrorindex', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -297,7 +297,7 @@ function App() {
 
   const autofetchData = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/autofetchdata', {
+      let result = await fetch('https://belk.onrender.com/autofetchdata', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -312,7 +312,7 @@ function App() {
   };
   const autofetchData2 = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/inv/autofetchdata2', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -326,7 +326,7 @@ function App() {
   };
   const autofetchData3 = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/inv/autofetchdata3', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata3', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -340,7 +340,7 @@ function App() {
   };
   const autofetchData4 = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/inv/autofetchdata4', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata4', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -354,7 +354,7 @@ function App() {
   };
   const autofetchData5 = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/inv/autofetchdata5', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -368,7 +368,7 @@ function App() {
   };
   const autofetchData6 = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/inv/autofetchdata6', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata6', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -382,7 +382,7 @@ function App() {
   };
   const autofetchData7 = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/inv/autofetchdata7', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata7', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -396,7 +396,7 @@ function App() {
   };
   const autofetchData8 = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/inv/autofetchdata8', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata8', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -410,7 +410,7 @@ function App() {
   };
   const autofetchDataerror = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/autofetchdata', {
+      let result = await fetch('https://belk.onrender.com/autofetchdata', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -425,7 +425,7 @@ function App() {
   };
   const setautoindex1 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('http://localhost:10000/setindex', {
+    let result = await fetch('https://belk.onrender.com/setindex', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -436,7 +436,7 @@ function App() {
   }
   const setautoindex2 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('http://localhost:10000/setindex2', {
+    let result = await fetch('https://belk.onrender.com/setindex2', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -447,7 +447,7 @@ function App() {
   }
   const setautoindex3 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('http://localhost:10000/setindex3', {
+    let result = await fetch('https://belk.onrender.com/setindex3', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -458,7 +458,7 @@ function App() {
   }
   const setautoindex4 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('http://localhost:10000/setindex4', {
+    let result = await fetch('https://belk.onrender.com/setindex4', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -469,7 +469,7 @@ function App() {
   }
   const setautoindex5 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('http://localhost:10000/setindex5', {
+    let result = await fetch('https://belk.onrender.com/setindex5', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -481,7 +481,7 @@ function App() {
 
   const setautoindex6 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('http://localhost:10000/setindex6', {
+    let result = await fetch('https://belk.onrender.com/setindex6', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -492,7 +492,7 @@ function App() {
   }
   const setautoindex7 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('http://localhost:10000/setindex7', {
+    let result = await fetch('https://belk.onrender.com/setindex7', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -504,7 +504,7 @@ function App() {
 
   const setautoindex8 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('http://localhost:10000/setindex8', {
+    let result = await fetch('https://belk.onrender.com/setindex8', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -775,7 +775,7 @@ function App() {
 
   const getupdatedproduct = async () => {
 
-    let result = await fetch('http://localhost:10000/getupdatedproduct', {
+    let result = await fetch('https://belk.onrender.com/getupdatedproduct', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -793,7 +793,7 @@ function App() {
       if (ans=== undefined || true) {
         setLoading(true)
         const response = await axios({
-          url: 'http://localhost:10000/download-inventory', // Replace with your backend URL
+          url: 'https://belk.onrender.com/download-inventory', // Replace with your backend URL
           method: 'GET',
           responseType: 'blob', // Important to get the response as a blob (binary data)
         });
