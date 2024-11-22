@@ -72,7 +72,7 @@ export default function Analysis() {
 
   const getbackup = async () => {
     console.log('get backup');
-    let backup = await fetch('https://belk.onrender.com/analysis/getbackup/analysis/getbackup', {
+    let backup = await fetch('https://belk.onrender.com/analysis/getbackup', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -82,7 +82,7 @@ export default function Analysis() {
   }
 
   const getdata = async () => {
-    let data = await fetch('https://belk.onrender.com/analysis/getbackup/analysis/getdata', {
+    let data = await fetch('https://belk.onrender.com/analysis/getdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -92,7 +92,7 @@ export default function Analysis() {
   }
 
   const getrowdata = async () => {
-    let data = await fetch('https://belk.onrender.com/analysis/getbackup/analysis/getrowdata', {
+    let data = await fetch('https://belk.onrender.com/analysis/getrowdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
