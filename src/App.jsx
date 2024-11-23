@@ -166,8 +166,6 @@ function App() {
   };
 
   const uploadinventoryfile = async () => {
-    console.log("upload file called")
-    alert('upload')
     setLoading(true)
     const formData = new FormData();
     formData.append('file', invfile);

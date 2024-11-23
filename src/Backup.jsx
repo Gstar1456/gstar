@@ -38,13 +38,15 @@ export default function Backup() {
   }
 
   const setbackupdata = (name) => {
+    setLoading(true)
     let bd = backup.filter((b) => b.name == name)
     setData(bd[0].data);
     setName(bd[0].name)
-
+setLoading(false)
   }
   
   const getbackup = async () => {
+    setLoading(true)
     let backup = await fetch('https://belk.onrender.com/analysis/getbackup', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
@@ -52,7 +54,8 @@ export default function Backup() {
     backup = await backup.json();
     setBackup(backup);
     setData(backup[backup.length-1].data);
-    setName(backup[backup.length-1].name)
+    setName(backup[backup.length-1].name);
+    setLoading(false)
   }
 
   // Pagination calculation for displaying the current page's data
