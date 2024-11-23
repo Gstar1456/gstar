@@ -165,8 +165,7 @@ function App() {
     setInvFile(e.target.files[0]);
   };
 
-  const uploadinventoryfile = async (e) => {
-    e.preventDefault();
+  const uploadinventoryfile = async () => {
     setLoading(true)
     const formData = new FormData();
     formData.append('file', invfile);
@@ -178,8 +177,7 @@ function App() {
       });
       alert(response.data.msg);
       window.location.reload();
-      getinvproducts();
-
+      setLoading(false)
     } catch (error) {
       console.error('Error uploading file:', error);
       setLoading(false)
@@ -789,8 +787,8 @@ function App() {
         ans = confirm("There are some invalid or such a url where error occur. If you visited that then press ok neigher check those url and retry")
       }
       console.log(ans)
-      if(!ans){geterrorurl(); return;}
-      if (ans=== undefined || true) {
+      if (!ans) { geterrorurl(); return; }
+      if (ans === undefined || true) {
         setLoading(true)
         const response = await axios({
           url: 'https://belk.onrender.com/download-inventory', // Replace with your backend URL
@@ -1227,73 +1225,73 @@ function App() {
           </Accordion.Body>
         </Accordion.Item>
 
-       {
-        errorlinks.length>0 && 
-        <Accordion.Item eventKey="1">
-        <Accordion.Header> <span style={{color:'red'}}>Number of url in which error occur: &nbsp; {errorlinks.length} </span> </Accordion.Header>
-        <Accordion.Body>
-          {/* --------first row of process */}
-          <div className="container">
+        {
+          errorlinks.length > 0 &&
+          <Accordion.Item eventKey="1">
+            <Accordion.Header> <span style={{ color: 'red' }}>Number of url in which error occur: &nbsp; {errorlinks.length} </span> </Accordion.Header>
+            <Accordion.Body>
+              {/* --------first row of process */}
+              <div className="container">
 
-            <div className="row">
-              <div className="col-lg-12">
-                <Button variant="secondary" className='me-4' onClick={autofetcherror}>
-                  Retry
-                </Button>
-                  <input
-                    type="number"
-                    className='me-4 p-1'
-                    style={{ width: '70px' }}
-                    placeholder={index2}
-                    onChange={(e) => seterrorCustomIndex(e.target.value)}
-                  />
+                <div className="row">
+                  <div className="col-lg-12">
+                    <Button variant="secondary" className='me-4' onClick={autofetcherror}>
+                      Retry
+                    </Button>
+                    <input
+                      type="number"
+                      className='me-4 p-1'
+                      style={{ width: '70px' }}
+                      placeholder={index2}
+                      onChange={(e) => seterrorCustomIndex(e.target.value)}
+                    />
 
-                  <Button variant="secondary" className='me-4' onClick={seterrorindex}>
-                    Set Index
-                  </Button>
+                    <Button variant="secondary" className='me-4' onClick={seterrorindex}>
+                      Set Index
+                    </Button>
 
 
-                <div className="container mt-2">
-                  <div className="row">
-                    <div className="col-lg-4 d-flex justify-content-center align-items-center">
-                      <h4>
-                        {errorindex}/{errorlinks.length}
-                      </h4>
-                      {errorloading && (
-                        <div className="loading-overlay ms-2">
-                          <Spinner animation="border" variant="primary" />
+                    <div className="container mt-2">
+                      <div className="row">
+                        <div className="col-lg-4 d-flex justify-content-center align-items-center">
+                          <h4>
+                            {errorindex}/{errorlinks.length}
+                          </h4>
+                          {errorloading && (
+                            <div className="loading-overlay ms-2">
+                              <Spinner animation="border" variant="primary" />
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                    <div className="col-lg-4 d-flex justify-content-center">
-                      <div style={{ height: 70, width: 70 }}>
-                        <CircularProgressbar value={(errorindex / errorlinks.length * 100)} text={`${(errorindex / errorlinks.length * 100).toFixed(0)}%`} />;
+                        <div className="col-lg-4 d-flex justify-content-center">
+                          <div style={{ height: 70, width: 70 }}>
+                            <CircularProgressbar value={(errorindex / errorlinks.length * 100)} text={`${(errorindex / errorlinks.length * 100).toFixed(0)}%`} />;
+                          </div>
+                        </div>
+                        <div className="col-lg-4 d-flex justify-content-start align-items-center">
+                          <h3>
+                            {errorspeed} s / URL
+                          </h3>
+                        </div>
                       </div>
                     </div>
-                    <div className="col-lg-4 d-flex justify-content-start align-items-center">
-                      <h3>
-                        {errorspeed} s / URL
-                      </h3>
-                    </div>
+                    {errurlerr && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
+                    <a href={errorlinks[errorindex]} target='_blank' style={{ color: errurlerr ? 'red' : '#1970ff' }}>{errorindex === errorlinks.length ? "Completed" : errorlinks[errorindex]}</a>
+                    <hr />
+                    <ol>
+                      {
+                        errorlinks.map((el) => (
+                          <li><a href={el} target='_blank'>{el}</a></li>
+                        ))
+                      }
+                    </ol>
                   </div>
                 </div>
-                {errurlerr && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                <a href={errorlinks[errorindex]} target='_blank' style={{ color: errurlerr ? 'red' : '#1970ff' }}>{errorindex === errorlinks.length ? "Completed" : errorlinks[errorindex]}</a>
-                <hr />
-                <ol>
-                  {
-                    errorlinks.map((el) => (
-                      <li><a href={el} target='_blank'>{el}</a></li>
-                    ))
-                  }
-                </ol>
               </div>
-            </div>
-          </div>
 
-        </Accordion.Body>
-      </Accordion.Item>
-       }
+            </Accordion.Body>
+          </Accordion.Item>
+        }
       </Accordion>
       <hr />
       <Outlet />
