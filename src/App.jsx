@@ -298,7 +298,7 @@ function App() {
 
   const autofetchData = async (link) => {
     try {
-      let result = await fetch('https://brand-b.onrender.com/autofetchdata', {
+      let result = await fetch('https://belk.onrender.com/autofetchdata', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -313,7 +313,7 @@ function App() {
   };
   const autofetchData2 = async (link) => {
     try {
-      let result = await fetch('https://brand-b.onrender.com/inv/autofetchdata2', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -327,7 +327,7 @@ function App() {
   };
   const autofetchData3 = async (link) => {
     try {
-      let result = await fetch('https://brand-b.onrender.com/inv/autofetchdata3', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata3', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -341,7 +341,7 @@ function App() {
   };
   const autofetchData4 = async (link) => {
     try {
-      let result = await fetch('https://brand-b.onrender.com/inv/autofetchdata4', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata4', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -355,7 +355,7 @@ function App() {
   };
   const autofetchData5 = async (link) => {
     try {
-      let result = await fetch('https://brand-b.onrender.com/inv/autofetchdata5', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -369,7 +369,7 @@ function App() {
   };
   const autofetchData6 = async (link) => {
     try {
-      let result = await fetch('https://brand-b.onrender.com/inv/autofetchdata6', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata6', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
