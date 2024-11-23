@@ -14,7 +14,22 @@
 .modal-dialog{
     max-width: 90% !important;
 }
-
+.result{
+    width: 80vw;
+    /* min-height: 20px; */
+    border: 1px solid black;;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    margin-top: 45px;
+    box-shadow: 0 0 10px gray;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: baseline;
+    padding: 0.3vw;
+    z-index: 10000;
+}
 .timer_container {
     width: 100%;
     height: 35px;
