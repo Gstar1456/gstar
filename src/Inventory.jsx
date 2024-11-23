@@ -5,72 +5,44 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import { Link, Outlet } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Spinner from 'react-bootstrap/Spinner';
 import Accordion from 'react-bootstrap/Accordion';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import Pagination from 'react-bootstrap/Pagination';
+
 
 function Inventory() {
-  const [show2, setShow2] = useState(false);
-  const [show1, setShow1] = useState(false);
-  const [show3, setShow3] = useState(false);
-  const [show4, setShow4] = useState(false);
-  const handleClose2 = () => setShow2(false);
-  const handleShow2 = () => setShow2(true);
-  const handleClose1 = () => setShow1(false);
-  const handleShow1 = () => setShow1(true);
-  const handleShow3 = () => setShow3(true);
-  const handleClose3 = () => setShow3(false);
-  const handleShow4 = () => setShow4(true);
-  const handleClose4 = () => setShow4(false);
-  
-  const [file, setFile] = useState(null);
-  const [updatedProduct, setUpdatedProduct] = useState([{}]);
-  const [iprice, setiprice]= useState([{}]);
-  const [dprice, setdprice]= useState([{}]);
-  const [oos, setOos]=useState([{}]);
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('file', file);
+  const [data, setData] = useState([{}]);
+  const [realData, setRealData] = useState([{}]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [num, setNum] = useState(7)
+  const [search, setSearch] = useState(null);
+  const [result, setResult] = useState([{}]);
+  const itemsPerPage = 10;
 
-    try {
-      const response = await axios.post('https://belk.onrender.com/mic/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      alert(response.data.msg);
-      window.location.reload();
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      alert('Failed to upload file');
-    }
+  const getupdatedproduct = async () => {
+    let result = await fetch('https://belk.onrender.com/mic/getupdatedproduct', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    result = await result.json();
+    setData(result)
+    setRealData(result)
+    setTotalProduct(result.length);
+    console.log(result.length);
   };
   
-const priceincrease=()=>{
- let iprice= updatedProduct.filter((up)=> ((up['Product Cost']).toFixed(2) < (up['Current Price']).toFixed(2) && up.quantity>4));
-   setiprice(iprice);
-   handleShow2();
-}
-const pricedecrease=()=>{
-  let dprice= updatedProduct.filter((up)=> ((up['Product Cost']).toFixed(2) > (up['Current Price']).toFixed(2) && up.quantity>4));
-  setiprice(dprice);
-  handleShow3();
-}
+  // Pagination calculation for displaying the current page's data
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
-const outofstock=()=>{
-  let oost= updatedProduct.filter((o)=>(o.quantity<6 && o.available==='T'));
-  setOos(oost);
-  handleShow4()
-}
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
   // --------------------------------------------------------------------
   const [invfile, setInvFile] = useState('');
   const [loading, setLoading] = useState(false);
@@ -138,12 +110,77 @@ const outofstock=()=>{
   useEffect(() => {
     getinvurl();
     getserialnumber();
-    geterrorurl()
+    geterrorurl();
+    getupdatedproduct();
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+
+
+
+  const handlePaginationClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Generate the page numbers to be displayed
+  const paginationRange = () => {
+    const range = [];
+    const maxPageNumbers = 5; // Max page numbers to show
+    let startPage = Math.max(currentPage - Math.floor(maxPageNumbers / 2), 1);
+    let endPage = startPage + maxPageNumbers - 1;
+
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - maxPageNumbers + 1, 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      range.push(i);
+    }
+    return range;
+  };
+  
+  const searchproduct = () => {
+    setResult([{}])
+    if (search !== null) {
+      new Promise(resolve => setTimeout(resolve, 1000))
+      const sr = realData.filter((d) => d.ASIN.toLowerCase().includes(search.toLowerCase()))
+      setResult(sr);
+    }
+  }
+
+  const cancelsearch = () => {
+    setResult([{}]);
+    setSearch(null)
+  }
+
+  const priceincrease = () => {
+    const ip = realData.filter((d) => (d['Current Price'] - d['Product Cost'])>0.9);
+    setData(ip)
+  }
+
+  const pricedecrease = () => {
+    const ip = realData.filter((d) => d['Current Price'] < d['Product Cost']);
+    setData(ip)
+  }
+
+  const outofstock = () => {
+    const ip = realData.filter((d) => d['quantity'] < num);
+    setData(ip)
+  }
+
+  const stock=()=>{
+    const s= realData.filter((d)=>d['quantity']>6 && d.available === 'F' );
+    setData(s)
+  }
+
+  const all = () => {
+    setData(realData)
+  }
+
+
   const handleBeforeUnload = (event) => {
     event.preventDefault();
     stopTimer();
@@ -226,7 +263,7 @@ const outofstock=()=>{
 
   const uploadinventoryfile = async (e) => {
     e.preventDefault();
-   
+
     try {
       setLoading(true)
       const formData = new FormData();
@@ -240,7 +277,7 @@ const outofstock=()=>{
       window.location.reload();
       getinvproducts();
       setLoading(false)
-    } catch(error) {
+    } catch (error) {
       console.error('Error uploading file:', error);
       setLoading(false)
       alert('Failed to upload file');
@@ -833,18 +870,7 @@ const outofstock=()=>{
     stopRef.current = true; // Set stop condition
   };
 
-  const getupdatedproduct = async () => {
 
-    let result = await fetch('https://belk.onrender.com/mic/getupdatedproduct', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    result = await result.json();
-    setUpdatedProduct(result);
-    setTotalProduct(result.length);
-    console.log(result.length);
-    handleShow1();
-  }
   const downloadInvontory = async () => {
     try {
       var ans;
@@ -1293,14 +1319,11 @@ const outofstock=()=>{
             </Accordion.Body>
           </Accordion.Item>
 
-          {
-            errorlinks.length > 0 &&
+        
             <Accordion.Item eventKey="1">
               <Accordion.Header> <span style={{ color: 'red' }}>Number of url in which error occur: &nbsp; {errorlinks.length} </span> </Accordion.Header>
               <Accordion.Body>
-                {/* --------first row of process */}
                 <div className="container">
-
                   <div className="row">
                     <div className="col-lg-12">
                       <Button variant="secondary" className='me-4' onClick={autofetcherror}>
@@ -1359,258 +1382,119 @@ const outofstock=()=>{
 
               </Accordion.Body>
             </Accordion.Item>
-          }
+
+          <Accordion.Item eventKey="2">
+            <Accordion.Header>Total Number of Updated Products : &nbsp;&nbsp; <span style={{ color: 'blue' }}>{data.length > 1 ? data.length : 0} </span></Accordion.Header>
+            <Accordion.Body>
+
+              <div className="d-flex mb-4  p-2 bg-primary text-white"> Filter Product :  
+                <button onClick={all} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>All</button>
+                <button onClick={priceincrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Price Increased</button>
+                <button onClick={pricedecrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Price Decrease</button>
+                <button onClick={outofstock} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Out of Stock </button> 
+                <button onClick={stock} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Come Back in Stock </button> 
+                <input onChange={(e) => setNum(e.target.value)} style={{ width: '40px' }} type="number" placeholder={num} /> <span className="ms-2 me-4">Which quantity is less than {num}</span>
+                <div>
+                  <input type="text" value={search} style={{ width: '20vw' }} placeholder="Search Products by ASIN" onChange={(e) => { setSearch(e.target.value), searchproduct() }} />
+                  <svg onClick={cancelsearch} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="ms-2 mb-1 bi bi-x-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+                  </svg>
+
+                </div>
+                {
+                  result.length > 0 && result[0].ASIN !== undefined &&
+                  <div className="result">
+                    <Table striped bordered hover className="bg-dark">
+                      <thead>
+                        <tr>
+                          <th>No</th>
+                          <th>Image</th>
+                          <th>Input UPC</th>
+                          <th>SKU</th>
+                          <th>Old Price</th>
+                          <th>Current Price</th>
+                          <th>Quantity</th>
+                          <th>Product URL</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {result.length > 0 && result.map((detailArray, i) => (
+                          <tr key={i}>
+                            <td>{indexOfFirstItem + i + 1}</td>
+                            <td><img src={detailArray['Image link']} alt="" height='40px' /></td>
+                            <td>{detailArray['upc']}</td>
+                            <td>{detailArray['SKUs']}</td>
+                            <td>{detailArray['Product Cost']}</td>
+                            <td>{detailArray['Current Price']}</td>
+                            <td>{detailArray['quantity']}</td>
+                            <td><a href={detailArray['Vendor URL']} target='_blank'>Click to see details</a></td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
+                }
+              </div>
+
+
+              <Table striped bordered hover className="bg-dark">
+                <thead>
+                  <tr>
+                  <th>No</th>
+                          <th>Image</th>
+                          <th>Input UPC</th>
+                          <th>SKU</th>
+                          <th>Old Price</th>
+                          <th>Current Price</th>
+                          <th>Quantity</th>
+                          <th>Product URL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.length > 0 && currentItems.map((detailArray, i) => (
+                    <tr key={i}>
+                      <td>{indexOfFirstItem + i + 1}</td>
+                            <td><img src={detailArray['Image link']} alt="" height='40px' /></td>
+                            <td>{detailArray['upc']}</td>
+                            <td>{detailArray['SKUs']}</td>
+                            <td>{detailArray['Product Cost']}</td>
+                            <td>{detailArray['Current Price']}</td>
+                            <td>{detailArray['quantity']}</td>
+                            <td><a href={detailArray['Vendor URL']} target='_blank'>Click to see details</a></td>
+                          </tr>
+                  ))}
+                </tbody>
+              </Table>
+
+              {/* Pagination */}
+              <Pagination>
+                <Pagination.Prev onClick={() => handlePaginationClick(currentPage - 1)} disabled={currentPage === 1} />
+
+                {/* Display page numbers with ellipses if needed */}
+                {currentPage > 1 && <Pagination.Item onClick={() => handlePaginationClick(1)}>1</Pagination.Item>}
+                {currentPage > 3 && <Pagination.Ellipsis />}
+                {paginationRange().map((page) => (
+                  <Pagination.Item
+                    key={page}
+                    active={page === currentPage}
+                    onClick={() => handlePaginationClick(page)}
+                  >
+                    {page}
+                  </Pagination.Item>
+                ))}
+                {currentPage < totalPages - 2 && <Pagination.Ellipsis />}
+                {currentPage < totalPages && <Pagination.Item onClick={() => handlePaginationClick(totalPages)}>{totalPages}</Pagination.Item>}
+
+                <Pagination.Next onClick={() => handlePaginationClick(currentPage + 1)} disabled={currentPage === totalPages} />
+              </Pagination>
+            </Accordion.Body>
+          </Accordion.Item>
         </Accordion>
         <hr />
         <Outlet />
       </div>
 
-      <hr />
-      <button onClick={getupdatedproduct}>See Comparison</button>
-      <Modal show={show1} onHide={handleClose1}>
-        <Modal.Header closeButton className='d-flex justify-content-center'>
-          <Modal.Title className='me-4 pe-4' style={{ borderRight: '3px solid black' }}>Latest Product Details</Modal.Title>
-          <Modal.Title>Total Product : {updatedProduct.length}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
 
-          <Table style={{width:'100%'}} striped bordered hover>
-            <thead>
-              <tr>
-
-                <th>No</th>
-                <th>Image</th>
-                <th>UPC</th>
-                <th>SKU</th>
-                <th>Product Price</th>
-                <th>Current Price</th>
-                <th>Quantity</th>
-                <th>Available</th>
-                <th>Product URL</th>
-              </tr>
-            </thead>
-            {updatedProduct.length > 0 && updatedProduct.map((detailArray, i) => (
-
-              <tbody>
-
-                <tr key={i}>
-                  <td style={{ padding: '0 !important' }}>
-                    {i + 1}
-                  </td>
-                  <td style={{ padding: '0 !important' }}>
-                    <img src={detailArray['Image link']} alt="" height='40px' />
-                  </td>
-                  <td>{detailArray.upc}</td>
-                  <td>{detailArray.SKUs}</td>
-                  <td>{detailArray['Product Cost']}</td>
-
-                  <td style={{ color: Number(detailArray['Product Cost']) !== Number(detailArray['Current Price']) ? 'red' : 'black' }}>
-                    {detailArray['Current Price']}
-                  </td>
-
-                  <td style={{ color: detailArray.quantity < 10 && detailArray.available == 'T' ? 'red' : 'black' }}>
-                    {detailArray.quantity}
-                  </td>
-                  <td>{detailArray.available}</td>
-                  <td> <a href={detailArray['Vendor URL']} target='_blank'>{detailArray['Vendor URL']}</a> </td>
-                </tr>
-
-              </tbody>
-
-            ))}
-          </Table>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose1}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-
-      <button onClick={priceincrease}>Increase Price</button>
-      <Modal show={show2} onHide={handleClose2}>
-        <Modal.Header closeButton className='d-flex justify-content-center'>
-          <Modal.Title className='me-4 pe-4' style={{ borderRight: '3px solid black' }}>Price Increase Details</Modal.Title>
-          <Modal.Title>Total Product : {iprice.length}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-
-          <Table style={{width:'100%'}} striped bordered hover>
-            <thead>
-              <tr>
-
-                <th>No</th>
-                <th>Image</th>
-                <th>UPC</th>
-                <th>SKU</th>
-                <th>Product Price</th>
-                <th>Current Price</th>
-                <th>Quantity</th>
-                <th>Available</th>
-                <th>Product URL</th>
-              </tr>
-            </thead>
-            {iprice.length > 0 && iprice.map((detailArray, i) => (
-
-              <tbody>
-
-                <tr key={i}>
-                  <td style={{ padding: '0 !important' }}>
-                    {i + 1}
-                  </td>
-                  <td style={{ padding: '0 !important' }}>
-                    <img src={detailArray['Image link']} alt="" height='40px' />
-                  </td>
-                  <td>{detailArray.upc}</td>
-                  <td>{detailArray.SKUs}</td>
-                  <td>{detailArray['Product Cost']}</td>
-
-                  <td style={{ color: Number(detailArray['Product Cost']) !== Number(detailArray['Current Price']) ? 'red' : 'black' }}>
-                    {Number(detailArray['Current Price']).toFixed(2)}
-                  </td>
-
-                  <td style={{ color: detailArray.quantity < 10 && detailArray.available == 'T' ? 'red' : 'black' }}>
-                    {detailArray.quantity}
-                  </td>
-                  <td>{detailArray.available}</td>
-                  <td> <a href={detailArray['Vendor URL']} target='_blank'>{detailArray['Vendor URL']}</a> </td>
-                </tr>
-
-              </tbody>
-
-            ))}
-          </Table>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose2}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <button onClick={pricedecrease}>Decreased Price</button>
-      <Modal show={show3} onHide={handleClose3}>
-        <Modal.Header closeButton className='d-flex justify-content-center'>
-          <Modal.Title className='me-4 pe-4' style={{ borderRight: '3px solid black' }}>Price Decreased</Modal.Title>
-          <Modal.Title>Total Product : {dprice.length}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-
-          <Table style={{width:'100%'}} striped bordered hover>
-            <thead>
-              <tr>
-
-                <th>No</th>
-                <th>Image</th>
-                <th>UPC</th>
-                <th>SKU</th>
-                <th>Product Price</th>
-                <th>Current Price</th>
-                <th>Quantity</th>
-                <th>Available</th>
-                <th>Product URL</th>
-              </tr>
-            </thead>
-            {dprice.length > 0 && dprice.map((detailArray, i) => (
-
-              <tbody>
-
-                <tr key={i}>
-                  <td style={{ padding: '0 !important' }}>
-                    {i + 1}
-                  </td>
-                  <td style={{ padding: '0 !important' }}>
-                    <img src={detailArray['Image link']} alt="" height='40px' />
-                  </td>
-                  <td>{detailArray.upc}</td>
-                  <td>{detailArray.SKUs}</td>
-                  <td>{detailArray['Product Cost']}</td>
-
-                  <td style={{ color: (Number(detailArray['Product Cost']) !== Number(detailArray['Current Price']) && detailArray.available ==='T') ? 'red' : 'black' }}>
-                    {Number(detailArray['Current Price']).toFixed(2)}
-                  </td>
-
-                  <td style={{ color: detailArray.quantity < 10 && detailArray.available == 'T' ? 'red' : 'black' }}>
-                    {detailArray.quantity}
-                  </td>
-                  <td>{detailArray.available}</td>
-                  <td> <a href={detailArray['Vendor URL']} target='_blank'>{detailArray['Vendor URL']}</a> </td>
-                </tr>
-
-              </tbody>
-
-            ))}
-          </Table>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose3}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-
-      <button onClick={outofstock}>Out of Stock Product</button>
-      <Modal show={show4} onHide={handleClose4}>
-        <Modal.Header closeButton className='d-flex justify-content-center'>
-          <Modal.Title className='me-4 pe-4' style={{ borderRight: '3px solid black' }}>Out Of Stock Product</Modal.Title>
-          <Modal.Title>Total Product : {oos.length}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-
-          <Table style={{width:'100%'}} striped bordered hover>
-            <thead>
-              <tr>
-
-                <th>No</th>
-                <th>Image</th>
-                <th>UPC</th>
-                <th>SKU</th>
-                <th>Product Price</th>
-                <th>Current Price</th>
-                <th>Quantity</th>
-                <th>Available</th>
-                <th>Product URL</th>
-              </tr>
-            </thead>
-            {oos.length > 0 && oos.map((detailArray, i) => (
-
-              <tbody>
-
-                <tr key={i}>
-                  <td style={{ padding: '0 !important' }}>
-                    {i + 1}
-                  </td>
-                  <td style={{ padding: '0 !important' }}>
-                    <img src={detailArray['Image link']} alt="" height='40px' />
-                  </td>
-                  <td>{detailArray.upc}</td>
-                  <td>{detailArray.SKUs}</td>
-                  <td>{detailArray['Product Cost']}</td>
-
-                  <td style={{ color: (Number(detailArray['Product Cost']) !== Number(detailArray['Current Price']) && detailArray.available ==='T') ? 'red' : 'black' }}>
-                    {Number(detailArray['Current Price']).toFixed(2)}
-                  </td>
-
-                  <td style={{ color: detailArray.quantity < 10 && detailArray.available == 'T' ? 'red' : 'black' }}>
-                    {detailArray.quantity}
-                  </td>
-                  <td>{detailArray.available}</td>
-                  <td> <a href={detailArray['Vendor URL']} target='_blank'>{detailArray['Vendor URL']}</a> </td>
-                </tr>
-
-              </tbody>
-
-            ))}
-          </Table>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose4}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
 
     </>
   );
