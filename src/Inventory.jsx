@@ -172,7 +172,7 @@ function Inventory() {
   }
 
   const stock=()=>{
-    const s= realData.filter((d)=>d['quantity']>6 && d.available === 'F' );
+    const s= realData.filter((d)=>d['quantity']>num && d.available === 'F' );
     setData(s)
   }
 
