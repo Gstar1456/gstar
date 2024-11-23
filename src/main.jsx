@@ -7,7 +7,9 @@ import Header from './Navbar.jsx';
 import Brand from './Brand.jsx';
 import Analysis from './Analysis.jsx';
 import Inventory from './Inventory.jsx';
+import Rowdata from './Rowdata.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Backup from './Backup.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
    
@@ -18,6 +20,8 @@ createRoot(document.getElementById('root')).render(
         <Route path='/brand' element={<Brand />} />
         <Route path='/analysis' element={<Analysis/>} />
         <Route path='/inventory' element={<Inventory/>} />
+        <Route path='/rowdata' element={<Rowdata/>} />
+        <Route path='/backup' element={<Backup/>} />
 
       </Routes>
 

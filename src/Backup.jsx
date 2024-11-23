@@ -1,29 +1,25 @@
 import { useEffect, useState } from "react";
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
+import * as XLSX from 'xlsx';
+import Spinner from 'react-bootstrap/Spinner';
 
-export default function Analysis() {
+
+export default function Backup() {
+
+  const [loading, setLoading]=useState(false)
   const [data, setData] = useState([{}]);
-  const [rowData, setRowData] = useState([{}]);
-  const [realData, setRealData] = useState([{}])
-  const [num, setNum] = useState(7)
-  const [backupData, setBackupData] = useState([{}]);
   const [backup, setBackup] = useState([{}]);
-  const [show, setShow] = useState(false);
   const [search, setSearch] = useState(null);
   const [result, setResult] = useState([{}]);
+  const [name,setName]=useState('');
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   useEffect(() => {
-    getdata();
+    getbackup();
   }, [])
 
 
@@ -31,7 +27,7 @@ export default function Analysis() {
     setResult([{}])
     if (search !== null) {
       new Promise(resolve => setTimeout(resolve, 1000))
-      const sr = realData.filter((d) => d.ASIN.toLowerCase().includes(search.toLowerCase()))
+      const sr = data.filter((d) => d.ASIN.toLowerCase().includes(search.toLowerCase()) || d['Input UPC'].toLowerCase().includes(search.toLowerCase()))
       setResult(sr);
     }
   }
@@ -41,36 +37,23 @@ export default function Analysis() {
     setSearch(null)
   }
 
-  const priceincrease = () => {
-    const ip = realData.filter((d) => d['Current Price'] > d['Product price']);
-    setData(ip)
-  }
+  const setbackupdata = (name) => {
+    let bd = backup.filter((b) => b.name == name)
+    setData(bd[0].data);
+    setName(bd[0].name)
 
-  const pricedecrease = () => {
-    const ip = realData.filter((d) => d['Current Price'] < d['Product price']);
-    setData(ip)
   }
-
-  const outofstock = () => {
-    const ip = realData.filter((d) => d['Current Quantity'] < num);
-    setData(ip)
-  }
-
-  const all = () => {
-    setData(realData)
-  }
-
-  const getdata = async () => {
-    let data = await fetch('https://belk.onrender.com/analysis/getdata', {
+  
+  const getbackup = async () => {
+    let backup = await fetch('https://belk.onrender.com/analysis/getbackup', {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-    data = await data.json();
-    setData(data);
-    setRealData(data);
+      headers: { 'Content-Type': 'application/json' }
+    });
+    backup = await backup.json();
+    setBackup(backup);
+    setData(backup[backup.length-1].data);
+    setName(backup[backup.length-1].name)
   }
-
-
 
   // Pagination calculation for displaying the current page's data
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -101,22 +84,78 @@ export default function Analysis() {
     return range;
   };
 
+  const handleDownload = (data) => {
+    const jsondata = data.data.map((item) => {
+        return {
+            'Input UPC': item['Input UPC'],
+            ASIN: item['ASIN'],
+            'Amazon link': item['Amazon link'],
+            SKU: item['SKU'],
+            'Image link': item['Image link'],
+            'Available Quantity': item['Available Quantity'],
+            'Product price': item['Product price'],
+            'Product link': item['Product link'],
+            'Fulfillment': item['Fulfillment'],
+            'Amazon Fees%': item['Amazon Fees%'],
+            'Shipping Template': item['Shipping Template'],
+            'Min Profit': item['Min Profit'],
+            'Current Price': item['Current Price'],
+            'Current Quantity': item['Current Quantity']
+        }
+    });
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(jsondata);
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+    const excelFile = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([excelFile], { type: 'application/octet-stream' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'backup.xlsx'; // Set the file name
+    link.click(); // Trigger the download
+  };
+
+  const deletebackup=async(name)=>{
+try{
+  setLoading(true)
+let res= await fetch('https://belk.onrender.com/deletebackup',{
+    method:'DELETE',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name})
+});
+res=await res.json();
+if(res.status){
+    window.location.reload();
+}
+
+}catch(err){
+    console.log(err);
+    alert('Error while deleting');
+    setLoading(false)
+}
+  }
+
   return (
-    <div className="bg-dark ps-4 pe-4" style={{ marginTop: '-17px', paddingTop: '17px', minHeight: '1200px' }}>
+    <div className="bg-dark ps-4 pe-4" style={{opacity: loading ? 0.5 : 1, color: loading ? 'black' : null, marginTop: '-17px', paddingTop: '17px', minHeight: '1200px' }}>
+         {loading && ( // Show spinner while loading is true
+        <div className="loading-overlay">
+          <Spinner animation="border" variant="primary" /> {/* Spinner from Bootstrap */}
+        </div>
+      )}
       <h1 className="fw mb-4">Welcome to analysis page</h1>
       <Accordion className="mb-4" defaultActiveKey={'0'}>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>Total Number of Updated Products : &nbsp;&nbsp; <span style={{ color: 'blue' }}>{data.length > 1 ? data.length : 0} </span></Accordion.Header>
+          <Accordion.Header>Total Number of Product in &nbsp; <span style={{fontWeight:'bolder'}}> {name} </span> &nbsp;: &nbsp;&nbsp; <span style={{ color: 'blue' }}>{data.length > 1 ? data.length : 0} </span></Accordion.Header>
           <Accordion.Body>
 
-            <div className="d-flex mb-4  p-2 bg-primary text-white"> Filter Product :  <button onClick={all} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>All</button> <button onClick={priceincrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Price Increased</button>  <button onClick={pricedecrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Price Decrease</button>
-              <button onClick={outofstock} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Out of Stock </button> <input onChange={(e) => setNum(e.target.value)} style={{ width: '40px' }} type="number" placeholder={num} /> <span className="ms-2 me-4">Which quantity is less than {num}</span>
+            <div className="d-flex mb-4  p-2 bg-primary text-white"> 
               <div>
-                <input type="text" value={search} style={{ width: '20vw' }} placeholder="Search Products by ASIN" onChange={(e) => { setSearch(e.target.value), searchproduct() }} />
-                <svg onClick={cancelsearch} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="ms-2 mb-1 bi bi-x-circle-fill" viewBox="0 0 16 16">
+               Search Products :  <input type="text" value={search} style={{ width: '20vw' }} placeholder="Search Products by ASIN" onChange={(e) => { setSearch(e.target.value), searchproduct() }} />
+                <svg onClick={cancelsearch} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="me-4 ms-2 mb-1 bi bi-x-circle-fill" viewBox="0 0 16 16">
                   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
                 </svg>
-                
+                ( Press space key after paste word)
               </div>
               {
                   result.length > 0 && result[0].ASIN !== undefined &&
@@ -124,7 +163,7 @@ export default function Analysis() {
                     <Table striped bordered hover className="bg-dark">
               <thead>
                 <tr>
-                  <th>No</th>
+                <th>No</th>
                   <th>Image</th>
                   <th>Input UPC</th>
                   <th>ASIN</th>
@@ -139,7 +178,7 @@ export default function Analysis() {
                 {result.length > 0 && result.map((detailArray, i) => (
                   <tr key={i}>
                     <td>{indexOfFirstItem + i + 1}</td>
-                    <td><img src={detailArray['Image link']} alt="" height='40px' /></td>
+                    <td><img src={detailArray['Image link']} alt="img" height='40px' /></td>
                     <td>{detailArray['Input UPC']}</td>
                     <td>{detailArray['ASIN']}</td>
                     <td>{detailArray['SKU']}</td>
@@ -159,7 +198,7 @@ export default function Analysis() {
             <Table striped bordered hover className="bg-dark">
               <thead>
                 <tr>
-                  <th>No</th>
+                <th>No</th>
                   <th>Image</th>
                   <th>Input UPC</th>
                   <th>ASIN</th>
@@ -174,7 +213,7 @@ export default function Analysis() {
                 {currentItems.length > 0 && currentItems.map((detailArray, i) => (
                   <tr key={i}>
                     <td>{indexOfFirstItem + i + 1}</td>
-                    <td><img src={detailArray['Image link']} alt="" height='40px' /></td>
+                    <td><img src={detailArray['Image link']} alt="img" height='40px' /></td>
                     <td>{detailArray['Input UPC']}</td>
                     <td>{detailArray['ASIN']}</td>
                     <td>{detailArray['SKU']}</td>
@@ -214,7 +253,24 @@ export default function Analysis() {
       </Accordion>
 
       {/* Back Up Files Section */}
-     
+      <h1 className="fw mb-4 mt-4">Back Up Files</h1>
+      <ul style={{ width: '49vw' }}>
+        {
+          backup.map((b) => (
+            <li key={b._id} style={{ color: 'white' }} className="m-2">{b.name} - ({b.data ? b.data.length : 0} Products)  
+            <button className="ms-4 p-0 ps-1 pe-1" onClick={() => setbackupdata(b.name)}>See details</button>
+             <button onClick={()=>handleDownload(b)} className="ms-4 p-0 ps-1 pe-1 me-4">Download</button>
+              <button className="p-0" style={{ backgroundColor: 'transparent' }} onClick={()=>{
+                deletebackup(b.name)
+              }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
+                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1h-4a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1l1 8a2.5 2.5 0 0 0 2.5 2h5a2.5 2.5 0 0 0 2.5-2l1-8h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-4z" />
+              </svg>
+            </button></li>
+          ))
+        }
+      </ul>
+    
     </div>
   )
 }

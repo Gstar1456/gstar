@@ -5,13 +5,10 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
 
-export default function Analysis() {
+export default function Rowdata() {
   const [data, setData] = useState([{}]);
-  const [rowData, setRowData] = useState([{}]);
   const [realData, setRealData] = useState([{}])
   const [num, setNum] = useState(7)
-  const [backupData, setBackupData] = useState([{}]);
-  const [backup, setBackup] = useState([{}]);
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState(null);
   const [result, setResult] = useState([{}]);
@@ -23,7 +20,7 @@ export default function Analysis() {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    getdata();
+    getrowdata();
   }, [])
 
 
@@ -41,36 +38,17 @@ export default function Analysis() {
     setSearch(null)
   }
 
-  const priceincrease = () => {
-    const ip = realData.filter((d) => d['Current Price'] > d['Product price']);
-    setData(ip)
-  }
 
-  const pricedecrease = () => {
-    const ip = realData.filter((d) => d['Current Price'] < d['Product price']);
-    setData(ip)
-  }
 
-  const outofstock = () => {
-    const ip = realData.filter((d) => d['Current Quantity'] < num);
-    setData(ip)
-  }
-
-  const all = () => {
-    setData(realData)
-  }
-
-  const getdata = async () => {
-    let data = await fetch('https://belk.onrender.com/analysis/getdata', {
+  const getrowdata = async () => {
+    let data = await fetch('https://belk.onrender.com/analysis/getrowdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
     data = await data.json();
-    setData(data);
-    setRealData(data);
+    setData(data)
+    console.log(data[0])
   }
-
-
 
   // Pagination calculation for displaying the current page's data
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -103,14 +81,13 @@ export default function Analysis() {
 
   return (
     <div className="bg-dark ps-4 pe-4" style={{ marginTop: '-17px', paddingTop: '17px', minHeight: '1200px' }}>
-      <h1 className="fw mb-4">Welcome to analysis page</h1>
+      <h1 className="fw mb-4">Uploaded Data</h1>
       <Accordion className="mb-4" defaultActiveKey={'0'}>
         <Accordion.Item eventKey="0">
-          <Accordion.Header>Total Number of Updated Products : &nbsp;&nbsp; <span style={{ color: 'blue' }}>{data.length > 1 ? data.length : 0} </span></Accordion.Header>
+          <Accordion.Header>Total Number of Uploaded Products : &nbsp;&nbsp; <span style={{ color: 'blue' }}>{data.length > 1 ? data.length : 0} </span></Accordion.Header>
           <Accordion.Body>
 
-            <div className="d-flex mb-4  p-2 bg-primary text-white"> Filter Product :  <button onClick={all} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>All</button> <button onClick={priceincrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Price Increased</button>  <button onClick={pricedecrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Price Decrease</button>
-              <button onClick={outofstock} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Out of Stock </button> <input onChange={(e) => setNum(e.target.value)} style={{ width: '40px' }} type="number" placeholder={num} /> <span className="ms-2 me-4">Which quantity is less than {num}</span>
+            <div className="d-flex mb-4  p-2 bg-primary text-white">
               <div>
                 <input type="text" value={search} style={{ width: '20vw' }} placeholder="Search Products by ASIN" onChange={(e) => { setSearch(e.target.value), searchproduct() }} />
                 <svg onClick={cancelsearch} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="ms-2 mb-1 bi bi-x-circle-fill" viewBox="0 0 16 16">
@@ -125,13 +102,10 @@ export default function Analysis() {
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Image</th>
                   <th>Input UPC</th>
                   <th>ASIN</th>
                   <th>SKU</th>
                   <th>Old Price</th>
-                  <th>Current Price</th>
-                  <th>Quantity</th>
                   <th>Product URL</th>
                 </tr>
               </thead>
@@ -139,13 +113,10 @@ export default function Analysis() {
                 {result.length > 0 && result.map((detailArray, i) => (
                   <tr key={i}>
                     <td>{indexOfFirstItem + i + 1}</td>
-                    <td><img src={detailArray['Image link']} alt="" height='40px' /></td>
                     <td>{detailArray['Input UPC']}</td>
                     <td>{detailArray['ASIN']}</td>
                     <td>{detailArray['SKU']}</td>
                     <td>{detailArray['Product price']}</td>
-                    <td>{detailArray['Current Price']}</td>
-                    <td>{detailArray['Current Quantity']}</td>
                     <td><a href={detailArray['Product link']} target='_blank'>Click to see details</a></td>
                   </tr>
                 ))}
@@ -160,13 +131,10 @@ export default function Analysis() {
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Image</th>
                   <th>Input UPC</th>
                   <th>ASIN</th>
                   <th>SKU</th>
                   <th>Old Price</th>
-                  <th>Current Price</th>
-                  <th>Quantity</th>
                   <th>Product URL</th>
                 </tr>
               </thead>
@@ -174,13 +142,11 @@ export default function Analysis() {
                 {currentItems.length > 0 && currentItems.map((detailArray, i) => (
                   <tr key={i}>
                     <td>{indexOfFirstItem + i + 1}</td>
-                    <td><img src={detailArray['Image link']} alt="" height='40px' /></td>
                     <td>{detailArray['Input UPC']}</td>
                     <td>{detailArray['ASIN']}</td>
                     <td>{detailArray['SKU']}</td>
                     <td>{detailArray['Product price']}</td>
-                    <td>{detailArray['Current Price']}</td>
-                    <td>{detailArray['Current Quantity']}</td>
+                   
                     <td><a href={detailArray['Product link']} target='_blank'>Click to see details</a></td>
                   </tr>
                 ))}
@@ -212,9 +178,6 @@ export default function Analysis() {
         </Accordion.Item>
         {/* Repeat similar structure for other Accordions */}
       </Accordion>
-
-      {/* Back Up Files Section */}
-     
     </div>
   )
 }

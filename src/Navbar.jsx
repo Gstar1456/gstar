@@ -25,9 +25,12 @@ Gstar <E-solution></E-solution>                </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
-                  <Nav.Link href="/" style={{color:'white'}} className='fs-5'>Inventory update</Nav.Link>
-                  <Nav.Link href="/inventory" style={{color:'white'}} className='fs-5'>Manual Inventory update</Nav.Link>
-                  <Nav.Link href="brand" style={{color:'white'}} className='fs-5'>Brand Scrapping</Nav.Link>
+                  <Nav.Link href="/" style={{color:'white'}} className='fs-6'>Inventory update</Nav.Link>
+                  <Nav.Link href="/analysis" style={{color:'white'}} className='fs-6'>Analysis</Nav.Link>
+                  <Nav.Link href="/backup" style={{color:'white'}} className='fs-6'>Backup</Nav.Link>
+                  <Nav.Link href="/rowdata" style={{color:'white'}} className='fs-6'>Uploaded-Data</Nav.Link>
+                  <Nav.Link href="/inventory" style={{color:'white'}} className='fs-6'>Manual update</Nav.Link>
+                  <Nav.Link href="brand" style={{color:'white'}} className='fs-6'>Brand Scrapping</Nav.Link>
               
                 </Nav>
                
