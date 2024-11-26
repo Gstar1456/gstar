@@ -783,22 +783,15 @@ function App() {
     result = await result.json();
     setTotalProduct(result.num);
   }
-  const downloadInvontory = async () => {
+  const downloadInvontory = async (e) => {
+    e.preventDefault();
     try {
-      var ans;
-      if (errorlinks.length > 0) {
-        ans = confirm("There are some invalid or such a url where error occur. If you visited that then press ok neigher check those url and retry")
-      }
-      console.log(ans)
-      if(!ans){geterrorurl(); return;}
-      if (ans=== undefined || true) {
         setLoading(true)
         const response = await axios({
-          url: 'https://belk.onrender.com/download-inventory', // Replace with your backend URL
+          url: 'https://belk.onrender.com/download-inventory', 
           method: 'GET',
-          responseType: 'blob', // Important to get the response as a blob (binary data)
+          responseType: 'blob',
         });
-        // Create a link element to trigger download
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
@@ -807,21 +800,26 @@ function App() {
         link.click();
         link.remove();
         setLoading(false)
-      }
-    } catch (error) {
+    }catch (error) {
       console.error('Error downloading the file:', error);
       setLoading(false)
     }
   }
-
-  const startall = () => {
+  const startall = async() => {
     autofetch();
+    await delay(2000)
     autofetch2();
+    await delay(2000)
     autofetch3();
+    await delay(2000)
     autofetch4();
+    await delay(2000)
     autofetch5();
+    await delay(2000)
     autofetch6();
+    await delay(2000)
     autofetch7();
+    await delay(2000)
     autofetch8();
   }
   return (

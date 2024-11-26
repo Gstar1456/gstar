@@ -25,6 +25,7 @@ function Inventory() {
   const itemsPerPage = 10;
 
   const getupdatedproduct = async () => {
+    setLoading(true)
     let result = await fetch('https://belk.onrender.com/mic/getupdatedproduct', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
@@ -33,7 +34,7 @@ function Inventory() {
     setData(result)
     setRealData(result)
     setTotalProduct(result.length);
-    console.log(result.length);
+    setLoading(false)
   };
   
   // Pagination calculation for displaying the current page's data
@@ -157,17 +158,17 @@ function Inventory() {
   }
 
   const priceincrease = () => {
-    const ip = realData.filter((d) => (d['Current Price'] - d['Product Cost'])>0.9);
+    const ip = realData.filter((d) => (d['Current Price'] - d['Product Cost'])>0.5 && d.available==='T');
     setData(ip)
   }
 
   const pricedecrease = () => {
-    const ip = realData.filter((d) => d['Current Price'] < d['Product Cost']);
+    const ip = realData.filter((d) => Number(d['Current Price']).toFixed(2) < Number(d['Product Cost']).toFixed(2) && d.available==='T');
     setData(ip)
   }
 
   const outofstock = () => {
-    const ip = realData.filter((d) => d['quantity'] < num);
+    const ip = realData.filter((d) => d['quantity'] < num && d.available==='T' );
     setData(ip)
   }
 
@@ -915,11 +916,11 @@ function Inventory() {
 
 
   return (
-    <>
+      
       <div style={{ opacity: loading ? 0.5 : 1, color: loading ? 'black' : null, paddingLeft: '3vw', paddingRight: '3vw' }}>
-        {loading && ( // Show spinner while loading is true
+        {loading && ( 
           <div className="loading-overlay">
-            <Spinner animation="border" variant="primary" /> {/* Spinner from Bootstrap */}
+            <Spinner animation="border" variant="primary" />
           </div>
         )}
         <div>
@@ -1493,10 +1494,6 @@ function Inventory() {
         <hr />
         <Outlet />
       </div>
-
-
-
-    </>
   );
 }
 
