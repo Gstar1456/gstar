@@ -45,7 +45,7 @@ export default function Backup() {
   }
   
   const getbackup = async () => {
-    let backup = await fetch('http://localhost:10000/analysis/getbackup', {
+    let backup = await fetch('https://belk.onrender.com/analysis/getbackup', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -119,7 +119,7 @@ export default function Backup() {
   const deletebackup=async(name)=>{
 try{
   setLoading(true)
-let res= await fetch('http://localhost:10000/deletebackup',{
+let res= await fetch('https://belk.onrender.com/deletebackup',{
     method:'DELETE',
     headers:{'Content-Type':'application/json'},
     body:JSON.stringify({name})

@@ -62,7 +62,7 @@ export default function Analysis() {
   }
 
   const getdata = async () => {
-    let data = await fetch('http://localhost:10000/analysis/getdata', {
+    let data = await fetch('https://belk.onrender.com/analysis/getdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
