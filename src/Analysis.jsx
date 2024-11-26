@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import Accordion from 'react-bootstrap/Accordion';
 import Table from 'react-bootstrap/Table';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
 
 export default function Analysis() {
   const [data, setData] = useState([{}]);
+  const [rowData, setRowData] = useState([{}]);
   const [realData, setRealData] = useState([{}])
   const [num, setNum] = useState(7)
+  const [backupData, setBackupData] = useState([{}]);
+  const [backup, setBackup] = useState([{}]);
+  const [show, setShow] = useState(false);
   const [search, setSearch] = useState(null);
   const [result, setResult] = useState([{}]);
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     getdata();
@@ -53,7 +62,7 @@ export default function Analysis() {
   }
 
   const getdata = async () => {
-    let data = await fetch('https://belk.onrender.com/analysis/getdata', {
+    let data = await fetch('http://localhost:10000/analysis/getdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -206,6 +215,26 @@ export default function Analysis() {
       </Accordion>
 
       {/* Back Up Files Section */}
+
+      <BarChart
+      width={600}
+      height={400}
+      data={data}
+      margin={{
+        top: 20,
+        right: 30,
+        left: 20,
+        bottom: 5,
+      }}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="price" fill="#8884d8" />
+      <Bar dataKey="quantity" fill="#82ca9d" />
+    </BarChart>
      
     </div>
   )

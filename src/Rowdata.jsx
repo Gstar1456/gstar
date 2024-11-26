@@ -41,7 +41,7 @@ export default function Rowdata() {
 
 
   const getrowdata = async () => {
-    let data = await fetch('https://belk.onrender.com/analysis/getrowdata', {
+    let data = await fetch('http://localhost:10000/analysis/getrowdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -176,6 +176,8 @@ export default function Rowdata() {
             </Pagination>
           </Accordion.Body>
         </Accordion.Item>
+
+        
         {/* Repeat similar structure for other Accordions */}
       </Accordion>
     </div>

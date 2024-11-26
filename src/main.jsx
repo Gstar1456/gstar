@@ -10,6 +10,7 @@ import Inventory from './Inventory.jsx';
 import Rowdata from './Rowdata.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Backup from './Backup.jsx';
+import Calculation from './Calculation.jsx';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
    
@@ -22,11 +23,8 @@ createRoot(document.getElementById('root')).render(
         <Route path='/inventory' element={<Inventory/>} />
         <Route path='/rowdata' element={<Rowdata/>} />
         <Route path='/backup' element={<Backup/>} />
-
+        <Route path='/calculation' element={<Calculation/>} />
       </Routes>
-
     </BrowserRouter>
   </StrictMode>
-
-
 )
