@@ -8,7 +8,50 @@ button{
     border: 2px solid black;
     border-radius: 7px !important;
 }
-
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+    margin-bottom: 0 !important;
+}
+.thread{
+    min-height: 50px;
+    display: flex;
+    width: 100%;
+    border-radius: 30px;
+    border: 2px solid white;
+    background-color: rgb(29, 29, 53);
+    color: white !important;
+    /* padding: 2px; */
+    align-items: center;
+    justify-content: center;
+}
+.CircularProgressbar-text {
+    fill: yellow !important;
+  }
+  .CircularProgressbar-path {
+    stroke: green;
+  }
+  .CircularProgressbar-trail {
+    stroke: white !important;
+  }
+.startbtn{
+    width: 120px;
+    border-radius: 30px !important;
+    background-color: transparent !important;
+    border:2px solid  rgb(255, 255, 255) !important;
+    color: white;
+}
+.inputbtn{
+    height: 50px;
+    /* border-radius: 30px; */
+    width: 50px;
+}
+.cus_row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.recharts-wrapper{
+    background-color: #ffe6e6;
+}
 .logo {
     height: 6em;
     padding: 1.5em;
@@ -40,7 +83,9 @@ button{
     display: flex;
     justify-content: center;
 }
-
+.container{
+    max-width: 100% !important;
+}
 .timer {
     height: 35px;
     width: 300px;

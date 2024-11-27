@@ -955,369 +955,268 @@ function Inventory() {
           <Accordion.Item eventKey="0">
             <Accordion.Header>Total Number of Product's URL: {links1 ? links1.length + links2.length + links3.length + links4.length + links5.length + links6.length + links7.length + links8.length : 0} &nbsp;&nbsp; || &nbsp;&nbsp; Total Number of urls fetched : {index1 + index2 + index3 + index4 + index5 + index6 + index7 + index8} &nbsp;&nbsp; || &nbsp;&nbsp; Remaining urls :  {links1 ? links1.length + links2.length + links3.length + links4.length + links5.length + links6.length + links7.length + links8.length - (index1 + index2 + index3 + index4 + index5 + index6 + index7 + index8) : 0} &nbsp;&nbsp; || &nbsp;&nbsp; Net Speed : &nbsp; <span style={{ color: 'red' }}> {(speed1 / 8).toFixed(1)} s / URL</span></Accordion.Header>
             <Accordion.Body>
-              {/* --------first row of process */}
+            <div className="thread" style={{ backgroundColor: loading1 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading1 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
-
                 <div className="row">
-                  <div className="col-lg-6">
-                    <Button variant="secondary" className='me-4' onClick={autofetch}>
-                      Start-1
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index1}
-                      onChange={(e) => setCustomIndex(e.target.value)}
-                    />
-
-                    <Button variant="secondary" className='me-4' onClick={setindex}>
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <button className='startbtn me-3' onClick={autofetch}>Start-I</button>
+                    <input className='inputbtn' type="number" placeholder={index1} onChange={(e) => setCustomIndex(e.target.value)} />
+                    <button className='startbtn ms-3' onClick={setindex} >
                       Set Index
-                    </Button>
-                    <div className="container mt-2">
-                      <div className="row">
-                        <div className="col-lg-4 d-flex justify-content-center align-items-center">
-                          <h4>
-                            {index1}/{links1.length}
-                          </h4>
-                          {loading1 && (
-                            <div className="loading-overlay ms-2">
-                              <Spinner animation="border" variant="primary" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-lg-4 d-flex justify-content-center">
-                          <div style={{ height: 70, width: 70 }}>
-                            <CircularProgressbar value={(index1 / links1.length * 100)} text={`${(index1 / links1.length * 100).toFixed(0)}%`} />;
-                          </div>
-                        </div>
-                        <div className="col-lg-4 d-flex justify-content-start align-items-center">
-                          <h3>
-                            {speed1} s / URL
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                    {urlError1 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                    <a href={links1[index1]} target='_blank' style={{ color: urlError1 ? 'red' : '#1970ff' }}>{index1 === links1.length ? "Completed" : links1[index1]}</a>
+                    </button>
                   </div>
-                  <div className="col-lg-6">
-                    <Button variant="secondary" className='me-4' onClick={autofetch2}>
-                      Start-2
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index2}
-                      onChange={(e) => setCustomIndex2(e.target.value)}
-                    />
 
-                    <Button variant="secondary" className='me-4' onClick={setindex2}>
-                      Set Index
-                    </Button>
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-md-4 d-flex justify-content-center align-items-center">
-                          <h4>
-                            {index2}/{links2.length}
-                          </h4>
-                          {loading2 && (
-                            <div className="loading-overlay ms-2">
-                              <Spinner animation="border" variant="primary" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-center">
-                          <div style={{ height: 70, width: 70 }}>
-                            <CircularProgressbar value={(index2 / links2.length * 100)} text={`${(index2 / links2.length * 100).toFixed(0)}%`} />;
-                          </div>
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-start align-items-center">
-                          <h3>
-                            {speed2} s / URL
-                          </h3>
-                        </div>
-                      </div>
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <h4> {index1}/{links1.length}</h4>
+                    <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                      <CircularProgressbar
+                        value={(index1 / links1.length * 100)}
+                        text={`${(index1 / links1.length * 100).toFixed(0)}%`}
+                      />;
                     </div>
+                    <h4>
+                      {speed1} s / URL
+                    </h4>
+                  </div>
+
+                  <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
+                    {urlError1 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
+                    <a href={links1[index1]} target='_blank' style={{ color: urlError1 ? 'red' : 'white' }}>{index1 === links1.length ? "Completed" : links1[index1]}</a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div className="thread mt-4" style={{ backgroundColor: loading2 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading2 ? '#000000 8px 3px 55px -17px' : '0' }}>
+              <div className="container">
+                <div className="row">
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <button className='startbtn me-3' onClick={autofetch2}>Start-II</button>
+                    <input className='inputbtn' type="number" placeholder={index2} onChange={(e) => setCustomIndex2(e.target.value)} />
+                    <button className='startbtn ms-3' onClick={setindex2} >
+                      Set Index
+                    </button>
+                  </div>
+
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <h4> {index2}/{links2.length}</h4>
+                    <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                      <CircularProgressbar
+                        value={(index2 / links2.length * 100)}
+                        text={`${(index2 / links2.length * 100).toFixed(0)}%`}
+                      />;
+                    </div>
+                    <h4>
+                      {speed2} s / URL
+                    </h4>
+                  </div>
+
+                  <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
                     {urlError2 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                    <a href={links2[index2]} target='_blank' style={{ color: urlError2 ? 'red' : '#1970ff' }}>{index2 === links2.length ? "Completed" : links2[index2]}</a>
+                    <a href={links2[index2]} target='_blank' style={{ color: urlError2 ? 'red' : 'white' }}>{index2 === links2.length ? "Completed" : links2[index2]}</a>
                   </div>
+
                 </div>
               </div>
-              {/* -------------second row of process--- */}
-              <hr />
+            </div>
+
+            <div className="thread mt-4" style={{ backgroundColor: loading3 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading3 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
-                  <div className="col-lg-6">
-                    <Button variant="secondary" className='me-4' onClick={autofetch3}>
-                      Start-3
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index3}
-                      onChange={(e) => setCustomIndex3(e.target.value)}
-                    />
-
-                    <Button variant="secondary" className='me-4' onClick={setindex3}>
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <button className='startbtn me-3' onClick={autofetch3}>Start-III</button>
+                    <input className='inputbtn' type="number" placeholder={index3} onChange={(e) => setCustomIndex3(e.target.value)} />
+                    <button className='startbtn ms-3' onClick={setindex3} >
                       Set Index
-                    </Button>
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-md-4 d-flex justify-content-center align-items-center">
-                          <h4>
-                            {index3}/{links3.length}
-                          </h4>
-                          {loading3 && (
-                            <div className="loading-overlay ms-2">
-                              <Spinner animation="border" variant="primary" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-center">
-                          <div style={{ height: 70, width: 70 }}>
-                            <CircularProgressbar value={(index3 / links3.length * 100)} text={`${(index3 / links3.length * 100).toFixed(0)}%`} />;
-                          </div>
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-start align-items-center">
-                          <h3>
-                            {speed3} s / URL
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                    {urlError1 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                    <a href={links3[index3]} target='_blank' style={{ color: urlError3 ? 'red' : '#1970ff' }}>{index3 === links3.length ? "Completed" : links3[index3]}</a>
+                    </button>
                   </div>
-                  <div className="col-lg-6">
-                    <Button variant="secondary" className='me-4' onClick={autofetch4}>
-                      Start-4
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index4}
-                      onChange={(e) => setCustomIndex4(e.target.value)}
-                    />
 
-                    <Button variant="secondary" className='me-4' onClick={setindex4}>
-                      Set Index
-                    </Button>
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-md-4 d-flex justify-content-center align-items-center">
-                          <h4>
-                            {index4}/{links4.length}
-                          </h4>
-                          {loading4 && (
-                            <div className="loading-overlay ms-2">
-                              <Spinner animation="border" variant="primary" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-center">
-                          <div style={{ height: 70, width: 70 }}>
-                            <CircularProgressbar value={(index4 / links4.length * 100)} text={`${(index4 / links4.length * 100).toFixed(0)}%`} />;
-                          </div>
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-start align-items-center">
-                          <h3>
-                            {speed4} s / URL
-                          </h3>
-                        </div>
-                      </div>
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <h4> {index3}/{links3.length}</h4>
+                    <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                      <CircularProgressbar
+                        value={(index3 / links3.length * 100)}
+                        text={`${(index3 / links3.length * 100).toFixed(0)}%`}
+                      />;
                     </div>
+                    <h4>
+                      {speed3} s / URL
+                    </h4>
+                  </div>
+
+                  <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
+                    {urlError3 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
+                    <a href={links3[index3]} target='_blank' style={{ color: urlError3 ? 'red' : 'white' }}>{index3 === links3.length ? "Completed" : links3[index3]}</a>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div className="thread mt-4" style={{ backgroundColor: loading4 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading4 ? '#000000 8px 3px 55px -17px' : '0' }}>
+              <div className="container">
+                <div className="row">
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <button className='startbtn me-3' onClick={autofetch4}>Start-IV</button>
+                    <input className='inputbtn' type="number" placeholder={index4} onChange={(e) => setCustomIndex4(e.target.value)} />
+                    <button className='startbtn ms-3' onClick={setindex4} >
+                      Set Index
+                    </button>
+                  </div>
+
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <h4> {index4}/{links4.length}</h4>
+                    <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                      <CircularProgressbar
+                        value={(index4 / links4.length * 100)}
+                        text={`${(index4 / links4.length * 100).toFixed(0)}%`}
+                      />;
+                    </div>
+                    <h4>
+                      {speed4} s / URL
+                    </h4>
+                  </div>
+
+                  <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
                     {urlError4 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                    <a href={links4[index4]} target='_blank' style={{ color: urlError4 ? 'red' : '#1970ff' }}>{index4 === links4.length ? "Completed" : links4[index4]}</a>                </div>
+                    <a href={links4[index4]} target='_blank' style={{ color: urlError4 ? 'red' : 'white' }}>{index4 === links4.length ? "Completed" : links4[index4]}</a>
+                  </div>
+
                 </div>
               </div>
+            </div>
 
-              {/* ----------third row of process-------- */}
-              <hr />
+            <div className="thread mt-4" style={{ backgroundColor: loading5 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading5 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
-                  <div className="col-lg-6">
-                    <Button variant="secondary" className='me-4' onClick={autofetch5}>
-                      Start-5
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index5}
-                      onChange={(e) => setCustomIndex5(e.target.value)}
-                    />
-
-                    <Button variant="secondary" className='me-4' onClick={setindex5}>
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <button className='startbtn me-3' onClick={autofetch5}>Start-V</button>
+                    <input className='inputbtn' type="number" placeholder={index5} onChange={(e) => setCustomIndex5(e.target.value)} />
+                    <button className='startbtn ms-3' onClick={setindex5} >
                       Set Index
-                    </Button>
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-md-4 d-flex justify-content-center align-items-center">
-                          <h4>
-                            {index5}/{links5.length}
-                          </h4>
-                          {loading5 && (
-                            <div className="loading-overlay ms-2">
-                              <Spinner animation="border" variant="primary" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-center">
-                          <div style={{ height: 70, width: 70 }}>
-                            <CircularProgressbar value={(index5 / links5.length * 100)} text={`${(index5 / links5.length * 100).toFixed(0)}%`} />;
-                          </div>
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-start align-items-center">
-                          <h3>
-                            {speed5} s / URL
-                          </h3>
-                        </div>
-                      </div>
+                    </button>
+                  </div>
+
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <h4> {index5}/{links5.length}</h4>
+                    <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                      <CircularProgressbar
+                        value={(index5 / links5.length * 100)}
+                        text={`${(index5 / links5.length * 100).toFixed(0)}%`}
+                      />;
                     </div>
+                    <h4>
+                      {speed5} s / URL
+                    </h4>
+                  </div>
+
+                  <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
                     {urlError5 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                    <a href={links5[index5]} target='_blank' style={{ color: urlError5 ? 'red' : '#1970ff' }}>{index5 === links5.length ? "Completed" : links5[index5]}</a>                </div>
-                  <div className="col-lg-6">
-                    <Button variant="secondary" className='me-4' onClick={autofetch6}>
-                      Start-6
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index6}
-                      onChange={(e) => setCustomIndex6(e.target.value)}
-                    />
+                    <a href={links5[index5]} target='_blank' style={{ color: urlError5 ? 'red' : 'white' }}>{index5 === links5.length ? "Completed" : links5[index5]}</a>
+                  </div>
 
-                    <Button variant="secondary" className='me-4' onClick={setindex6}>
-                      Set Index
-                    </Button>
-                    <hr />
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-md-4 d-flex justify-content-center align-items-center">
-                          <h4>
-                            {index6}/{links6.length}
-                          </h4>
-                          {loading6 && (
-                            <div className="loading-overlay ms-2">
-                              <Spinner animation="border" variant="primary" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-center">
-                          <div style={{ height: 70, width: 70 }}>
-                            <CircularProgressbar value={(index6 / links6.length * 100)} text={`${(index6 / links6.length * 100).toFixed(0)}%`} />;
-                          </div>
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-start align-items-center">
-                          <h3>
-                            {speed6} s / URL
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                    {urlError6 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                    <a href={links6[index6]} target='_blank' style={{ color: urlError6 ? 'red' : '#1970ff' }}>{index6 === links6.length ? "Completed" : links6[index6]}</a>                </div>
                 </div>
               </div>
+            </div>
 
-              {/* --------fourth row of process---------- */}
-              <hr />
+            <div className="thread mt-4" style={{ backgroundColor: loading6 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading6 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
-                  <div className="col-lg-6">
-                    <Button variant="secondary" className='me-4' onClick={autofetch7}>
-                      Start-7
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index7}
-                      onChange={(e) => setCustomIndex7(e.target.value)}
-                    />
-
-                    <Button variant="secondary" className='me-4' onClick={setindex7}>
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <button className='startbtn me-3' onClick={autofetch6}>Start-VI</button>
+                    <input className='inputbtn' type="number" placeholder={index6} onChange={(e) => setCustomIndex6(e.target.value)} />
+                    <button className='startbtn ms-3' onClick={setindex6} >
                       Set Index
-                    </Button>
-                    <div className="container">
-                      <div className="row">
-                        <div className="col-md-4 d-flex justify-content-center align-items-center">
-                          <h4>
-                            {index7}/{links7.length}
-                          </h4>
-                          {loading7 && (
-                            <div className="loading-overlay ms-2">
-                              <Spinner animation="border" variant="primary" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-center">
-                          <div style={{ height: 70, width: 70 }}>
-                            <CircularProgressbar value={(index7 / links7.length * 100)} text={`${(index7 / links7.length * 100).toFixed(0)}%`} />;
-                          </div>
-                        </div>
-                        <div className="col-md-4 d-flex justify-content-start align-items-center">
-                          <h3>
-                            {speed7} s / URL
-                          </h3>
-                        </div>
-                      </div>
-                    </div>
-                    {urlError7 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                    <a href={links7[index7]} target='_blank' style={{ color: urlError7 ? 'red' : '#1970ff' }}>{index7 === links7.length ? "Completed" : links7[index7]}</a>                </div>
-                  <div className="col-lg-6">
-                    <Button variant="secondary" className='me-4' onClick={autofetch8}>
-                      Start-8
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index8}
-                      onChange={(e) => setCustomIndex8(e.target.value)}
-                    />
+                    </button>
+                  </div>
 
-                    <Button variant="secondary" className='me-4' onClick={setindex8}>
-                      Set Index
-                    </Button>
-                    <div className="col-lg-12">
-                      <div className="container">
-                        <div className="row">
-                          <div className="col-md-4 d-flex justify-content-center align-items-center">
-                            <h4>
-                              {index8}/{links8.length}
-                            </h4>
-                            {loading8 && (
-                              <div className="loading-overlay ms-2">
-                                <Spinner animation="border" variant="primary" />
-                              </div>
-                            )}
-                          </div>
-                          <div className="col-md-4 d-flex justify-content-center">
-                            <div style={{ height: 70, width: 70 }}>
-                              <CircularProgressbar value={(index8 / links8.length * 100)} text={`${(index8 / links8.length * 100).toFixed(0)}%`} />;
-                            </div>
-                          </div>
-                          <div className="col-md-4 d-flex justify-content-start align-items-center">
-                            <h3>
-                              {speed8} s / URL
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-
-                      {urlError8 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                      <a href={links8[index8]} target='_blank' style={{ color: urlError8 ? 'red' : '#1970ff' }}>{index8 === links8.length ? "Completed" : links8[index8]}</a>
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <h4> {index6}/{links6.length}</h4>
+                    <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                      <CircularProgressbar
+                        value={(index6 / links6.length * 100)}
+                        text={`${(index6 / links6.length * 100).toFixed(0)}%`}
+                      />;
                     </div>
+                    <h4>
+                      {speed6} s / URL
+                    </h4>
+                  </div>
+
+                  <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
+                    {urlError6 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
+                    <a href={links6[index6]} target='_blank' style={{ color: urlError6 ? 'red' : 'white' }}>{index6 === links6.length ? "Completed" : links6[index6]}</a>
                   </div>
                 </div>
               </div>
-            </Accordion.Body>
+            </div>
+
+            <div className="thread mt-4" style={{ backgroundColor: loading7 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading7 ? '#000000 8px 3px 55px -17px' : '0' }}>
+              <div className="container">
+                <div className="row">
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <button className='startbtn me-3' onClick={autofetch7}>Start-VII</button>
+                    <input className='inputbtn' type="number" placeholder={index7} onChange={(e) => setCustomIndex7(e.target.value)} />
+                    <button className='startbtn ms-3' onClick={setindex7} >
+                      Set Index
+                    </button>
+                  </div>
+
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <h4> {index7}/{links7.length}</h4>
+                    <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                      <CircularProgressbar
+                        value={(index7 / links7.length * 100)}
+                        text={`${(index7 / links7.length * 100).toFixed(0)}%`}
+                      />;
+                    </div>
+                    <h4>
+                      {speed7} s / URL
+                    </h4>
+                  </div>
+
+                  <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
+                    {urlError7 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
+                    <a href={links7[index7]} target='_blank' style={{ color: urlError7 ? 'red' : 'white' }}>{index7 === links7.length ? "Completed" : links7[index7]}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="thread mt-4" style={{ backgroundColor: loading8 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading8 ? '#000000 8px 3px 55px -17px' : '0' }}>
+              <div className="container">
+                <div className="row">
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <button className='startbtn me-3' onClick={autofetch8}>Start-VIII</button>
+                    <input className='inputbtn' type="number" placeholder={index8} onChange={(e) => setCustomIndex8(e.target.value)} />
+                    <button className='startbtn ms-3' onClick={setindex8} >
+                      Set Index
+                    </button>
+                  </div>
+
+                  <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                    <h4> {index8}/{links8.length}</h4>
+                    <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                      <CircularProgressbar
+                        value={(index8 / links8.length * 100)}
+                        text={`${(index8 / links8.length * 100).toFixed(0)}%`}
+                      />;
+                    </div>
+                    <h4>
+                      {speed8} s / URL
+                    </h4>
+                  </div>
+
+                  <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
+                    {urlError8 && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
+                    <a href={links8[index8]} target='_blank' style={{ color: urlError8 ? 'red' : 'white' }}>{index8 === links8.length ? "Completed" : links8[index8]}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </Accordion.Body>
           </Accordion.Item>
 
         
