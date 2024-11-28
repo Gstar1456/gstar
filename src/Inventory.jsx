@@ -46,10 +46,10 @@ function Inventory() {
     setData(uniqueProducts)
     setRealData(uniqueProducts)
     setTotalProduct(result.length);
-    let newdata= data.map((d)=> {
+    let newdata= uniqueProducts.map((d)=> {
       return {
         ...d,
-        diff: (d['Current Price']-d['Product price']).toFixed(2)
+        diff: (d['Current Price']-d['Product Cost']).toFixed(2)
       }
     })
     setNewData(newdata);
@@ -1413,7 +1413,7 @@ function Inventory() {
         </Accordion>
         <hr />
         <h3>Comparative Price Insights</h3>
-      <div className="d-flex">
+      <div className="d-flex mt-4">
         <div className="me-4">Current Price : <span className="text-danger">Red</span> <span style={{ height: '15px', width: '20px', backgroundColor: 'red' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </div>
         <div className="me-4">Old Price : <span style={{ color: '#1bb353' }}>Red</span> <span style={{ height: '15px', backgroundColor: '#1bb353' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </div>
         <p className="me-4">Price Increased : {iprice}
