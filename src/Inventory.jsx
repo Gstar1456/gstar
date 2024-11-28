@@ -21,7 +21,7 @@ function Inventory() {
   const [realData, setRealData] = useState([{}]);
   const [currentPage, setCurrentPage] = useState(1);
   const [num, setNum] = useState(7)
-  const [search, setSearch] = useState(null);
+  const [search, setSearch] = useState('');
   const [result, setResult] = useState([{}]);
   const itemsPerPage = 10;
 
@@ -45,7 +45,6 @@ function Inventory() {
     setLoading(false)
     setData(uniqueProducts)
     setRealData(uniqueProducts)
-    setTotalProduct(result.length);
     let newdata= uniqueProducts.map((d)=> {
       return {
         ...d,
@@ -122,7 +121,6 @@ function Inventory() {
   const [speed8, setSpeed8] = useState(0);
   const [errorspeed, setSpeederror] = useState(0);
 
-  const [totalProduct, setTotalProduct] = useState(0);
   const [urlError1, setUrlError1] = useState(false);
   const [urlError2, setUrlError2] = useState(false);
   const [urlError8, setUrlError8] = useState(false);
@@ -172,9 +170,11 @@ function Inventory() {
   
   const searchproduct = () => {
     setResult([{}])
+    console.log('search')
     if (search !== null) {
       new Promise(resolve => setTimeout(resolve, 1000))
-      const sr = realData.filter((d) => d.upc.toLowerCase().includes(search.toLowerCase()))
+      const sr = realData.filter((d) => d.upc.toLowerCase().includes(search.toLowerCase()));
+      console.log(sr)
       setResult(sr);
     }
   }
@@ -1323,7 +1323,7 @@ function Inventory() {
 
                 </div>
                 {
-                  result.length > 0 && result[0].ASIN !== undefined &&
+                  result.length > 0 && result[0].upc !== undefined &&
                   <div className="result">
                     <Table striped bordered hover className="bg-dark">
                       <thead>
@@ -1339,7 +1339,7 @@ function Inventory() {
                         </tr>
                       </thead>
                       <tbody>
-                        {result.length > 0 && result.map((detailArray, i) => (
+                        {result.length>0 && result.map((detailArray, i) => (
                           <tr key={i}>
                             <td>{indexOfFirstItem + i + 1}</td>
                             <td><img src={detailArray['Image link']} alt="" height='40px' /></td>
