@@ -174,7 +174,7 @@ function Inventory() {
     setResult([{}])
     if (search !== null) {
       new Promise(resolve => setTimeout(resolve, 1000))
-      const sr = realData.filter((d) => d.ASIN.toLowerCase().includes(search.toLowerCase()))
+      const sr = realData.filter((d) => d.upc.toLowerCase().includes(search.toLowerCase()))
       setResult(sr);
     }
   }
@@ -984,7 +984,7 @@ function Inventory() {
           }
           <div className="timer">
             Total updated Product : {data.length} <span onClick={getupdatedproduct}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="ms-4 bi bi-arrow-clockwise" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+              <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
               <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
             </svg></span>
           </div>
@@ -1309,14 +1309,14 @@ function Inventory() {
             <Accordion.Body>
 
               <div className="d-flex mb-4  p-2 bg-primary text-white"> Filter Product :  
-                <button onClick={all} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>All</button>
-                <button onClick={priceincrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Price Increased</button>
-                <button onClick={pricedecrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Price Decrease</button>
-                <button onClick={outofstock} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Out of Stock </button> 
-                <button onClick={stock} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' }}>Come Back in Stock </button> 
+                <button onClick={all} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent', border:'none' }}>All</button>
+                <button onClick={priceincrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent', border:'none'}}>Price Increased</button>
+                <button onClick={pricedecrease} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' , border:'none'}}>Price Decrease</button>
+                <button onClick={outofstock} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' , border:'none'}}>Out of Stock </button> 
+                <button onClick={stock} className="text-white p-0 ms-4 me-4" style={{ backgroundColor: 'transparent' , border:'none'}}>Come Back in Stock </button> 
                 <input onChange={(e) => setNum(e.target.value)} style={{ width: '40px' }} type="number" placeholder={num} /> <span className="ms-2 me-4">Which quantity is less than {num}</span>
                 <div>
-                  <input type="text" value={search} style={{ width: '20vw' }} placeholder="Search Products by ASIN" onChange={(e) => { setSearch(e.target.value), searchproduct() }} />
+                  <input type="text" value={search} style={{ width: '20vw' }} placeholder="Search Products by upc" onChange={(e) => { setSearch(e.target.value), searchproduct() }} />
                   <svg onClick={cancelsearch} xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="ms-2 mb-1 bi bi-x-circle-fill" viewBox="0 0 16 16">
                     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
                   </svg>
@@ -1418,11 +1418,11 @@ function Inventory() {
         <div className="me-4">Old Price : <span style={{ color: '#1bb353' }}>Red</span> <span style={{ height: '15px', backgroundColor: '#1bb353' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </div>
         <p className="me-4">Price Increased : {iprice}
           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="red" className="ms-2 bi bi-graph-up-arrow" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
+            <path fillRule="evenodd" d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
           </svg></p>
         <p className="me-4">Price Decreased : {dprice}
           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1bb353" className="ms-2 bi bi-graph-down-arrow" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm10 11.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 0-1 0v2.6l-3.613-4.417a.5.5 0 0 0-.74-.037L7.06 8.233 3.404 3.206a.5.5 0 0 0-.808.588l4 5.5a.5.5 0 0 0 .758.06l2.609-2.61L13.445 11H10.5a.5.5 0 0 0-.5.5" />
+            <path fillRule="evenodd" d="M0 0h1v15h15v1H0zm10 11.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 0-1 0v2.6l-3.613-4.417a.5.5 0 0 0-.74-.037L7.06 8.233 3.404 3.206a.5.5 0 0 0-.808.588l4 5.5a.5.5 0 0 0 .758.06l2.609-2.61L13.445 11H10.5a.5.5 0 0 0-.5.5" />
           </svg></p>
         <p className="me-4">Out of stock(less than 10) : {oos}
           <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" className="ms-2 bi bi-cart-x-fill" viewBox="0 0 16 16">
