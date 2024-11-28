@@ -25,6 +25,13 @@ function Inventory() {
   const [result, setResult] = useState([{}]);
   const itemsPerPage = 10;
 
+  const [iprice,setiprice]=useState(0);
+  const [dprice,setdprice]=useState(0);
+  const [oos,setoos]=useState(0);
+  const [na,setna]=useState(0);
+  const [newData,setNewData]=useState([{}])
+
+
   const getupdatedproduct = async () => {
     setLoading(true)
     let result = await fetch('https://belk.onrender.com/mic/getupdatedproduct', {
@@ -35,11 +42,26 @@ function Inventory() {
     const uniqueProducts = result.filter((product, index, self) => 
       index === self.findIndex(p => p['upc'] === product['upc'])
     );
+    setLoading(false)
     setData(uniqueProducts)
-    console.log(uniqueProducts.length)
     setRealData(uniqueProducts)
     setTotalProduct(result.length);
-    setLoading(false)
+    let newdata= data.map((d)=> {
+      return {
+        ...d,
+        diff: (d['Current Price']-d['Product price']).toFixed(2)
+      }
+    })
+    setNewData(newdata);
+    let i= uniqueProducts.filter((d)=>d['Current Price'].toFixed(2)>d['Product Cost'].toFixed(2));
+    setiprice(i.length);
+    let d=uniqueProducts.filter((d)=>d['Current Price'].toFixed(2)<d['Product Cost'].toFixed(2));
+    setdprice(d.length);
+    let o= uniqueProducts.filter((d)=>d['quantity']<10);
+    setoos(o.length)
+    let n=uniqueProducts.filter((d)=>d['Current Price'].toFixed(2)==d['Product Cost'].toFixed(2));
+    setna(n.length);
+    
   };
   
   // Pagination calculation for displaying the current page's data
@@ -1390,7 +1412,25 @@ function Inventory() {
           </Accordion.Item>
         </Accordion>
         <hr />
-        <LineChart width={1600} className="bg-dark p-1 mb-4" height={300} data={data}>
+        <h3>Comparative Price Insights</h3>
+      <div className="d-flex">
+        <div className="me-4">Current Price : <span className="text-danger">Red</span> <span style={{ height: '15px', width: '20px', backgroundColor: 'red' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </div>
+        <div className="me-4">Old Price : <span style={{ color: '#1bb353' }}>Red</span> <span style={{ height: '15px', backgroundColor: '#1bb353' }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> </div>
+        <p className="me-4">Price Increased : {iprice}
+          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="red" className="ms-2 bi bi-graph-up-arrow" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
+          </svg></p>
+        <p className="me-4">Price Decreased : {dprice}
+          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="#1bb353" className="ms-2 bi bi-graph-down-arrow" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M0 0h1v15h15v1H0zm10 11.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 0-1 0v2.6l-3.613-4.417a.5.5 0 0 0-.74-.037L7.06 8.233 3.404 3.206a.5.5 0 0 0-.808.588l4 5.5a.5.5 0 0 0 .758.06l2.609-2.61L13.445 11H10.5a.5.5 0 0 0-.5.5" />
+          </svg></p>
+        <p className="me-4">Out of stock(less than 10) : {oos}
+          <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" fill="currentColor" className="ms-2 bi bi-cart-x-fill" viewBox="0 0 16 16">
+            <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M7.354 5.646 8.5 6.793l1.146-1.147a.5.5 0 0 1 .708.708L9.207 7.5l1.147 1.146a.5.5 0 0 1-.708.708L8.5 8.207 7.354 9.354a.5.5 0 1 1-.708-.708L7.793 7.5 6.646 6.354a.5.5 0 1 1 .708-.708" />
+          </svg></p>
+        <p>No price Change : {na}</p>
+      </div>
+        <LineChart width={1600} className="bg-dark p-1 mb-4" height={300} data={newData}>
       {/* <CartesianGrid stroke="#ccc" /> */}
       <XAxis dataKey="diff" />
       <YAxis />
