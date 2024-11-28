@@ -12,6 +12,7 @@ import Accordion from 'react-bootstrap/Accordion';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Pagination from 'react-bootstrap/Pagination';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 
 
 function Inventory() {
@@ -31,8 +32,12 @@ function Inventory() {
       headers: { 'Content-Type': 'application/json' }
     });
     result = await result.json();
-    setData(result)
-    setRealData(result)
+    const uniqueProducts = result.filter((product, index, self) => 
+      index === self.findIndex(p => p['upc'] === product['upc'])
+    );
+    setData(uniqueProducts)
+    console.log(uniqueProducts.length)
+    setRealData(uniqueProducts)
     setTotalProduct(result.length);
     setLoading(false)
   };
@@ -262,13 +267,11 @@ function Inventory() {
     setInvFile(e.target.files[0]);
   };
 
-  const uploadinventoryfile = async (e) => {
-    e.preventDefault();
-
+  const uploadinventoryfile = async () => {
+    setLoading(true)
+    const formData = new FormData();
+    formData.append('file', invfile);
     try {
-      setLoading(true)
-      const formData = new FormData();
-      formData.append('file', invfile);
       const response = await axios.post('https://belk.onrender.com/mic/uploadinvfile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -276,12 +279,12 @@ function Inventory() {
       });
       alert(response.data.msg);
       window.location.reload();
-      getinvproducts();
       setLoading(false)
+
     } catch (error) {
       console.error('Error uploading file:', error);
       setLoading(false)
-      alert('Failed to upload file');
+      alert(error);
     }
   };
   const settime = (time) => {
@@ -634,8 +637,9 @@ function Inventory() {
         } else {
           setUrlError1(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch:", err);
@@ -663,8 +667,9 @@ function Inventory() {
         } else {
           setUrlError2(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch:", err);
@@ -690,8 +695,9 @@ function Inventory() {
         } else {
           setUrlError3(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch:", err);
@@ -717,8 +723,9 @@ function Inventory() {
         } else {
           setUrlError4(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch:", err);
@@ -744,8 +751,9 @@ function Inventory() {
         } else {
           setUrlError5(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch5:", err);
@@ -772,8 +780,9 @@ function Inventory() {
         } else {
           setUrlError6(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch6:", err);
@@ -801,8 +810,9 @@ function Inventory() {
         } else {
           setUrlError7(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch7:", err);
@@ -829,8 +839,9 @@ function Inventory() {
         } else {
           setUrlError8(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch8:", err);
@@ -903,18 +914,23 @@ function Inventory() {
     }
   }
 
-  const startall = () => {
+  const startall = async() => {
     autofetch();
+    await delay(1000)
     autofetch2();
+    await delay(1000)
     autofetch3();
+    await delay(1000)
     autofetch4();
+    await delay(1000)
     autofetch5();
-    autofetch6();
+    await delay(1000)
+    autofetch6();  
+    await delay(1000)
     autofetch7();
+    await delay(1000)
     autofetch8();
   }
-
-
   return (
       
       <div style={{ opacity: loading ? 0.5 : 1, color: loading ? 'black' : null, paddingLeft: '3vw', paddingRight: '3vw' }}>
@@ -945,7 +961,7 @@ function Inventory() {
             (loading1 || loading2 || loading3 || loading4 || loading5 || loading6 || loading7 || loading8) && <div className='timer'>Expected Time :&nbsp;<span style={{ fontWeight: 'bolder' }}>{formatElapsedTime1((speed1 / 8) * (links1.length + links2.length + links3.length + links4.length + links5.length + links6.length + links7.length + links8.length - (index1 + index2 + index3 + index4 + index5 + index6 + index7 + index8)))}</span> </div>
           }
           <div className="timer">
-            Total updated Product : {totalProduct.length} <span onClick={getupdatedproduct}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="ms-4 bi bi-arrow-clockwise" viewBox="0 0 16 16">
+            Total updated Product : {data.length} <span onClick={getupdatedproduct}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="ms-4 bi bi-arrow-clockwise" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
               <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
             </svg></span>
@@ -988,7 +1004,7 @@ function Inventory() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading2 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading2 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading2 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading2 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1021,7 +1037,7 @@ function Inventory() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading3 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading3 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading3 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading3 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1054,7 +1070,7 @@ function Inventory() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading4 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading4 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading4 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading4 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1087,7 +1103,7 @@ function Inventory() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading5 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading5 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading5 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading5 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1120,7 +1136,7 @@ function Inventory() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading6 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading6 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading6 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading6 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1152,7 +1168,7 @@ function Inventory() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading7 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading7 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading7 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading7 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1184,7 +1200,7 @@ function Inventory() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading8 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading8 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading8 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading8 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1218,71 +1234,54 @@ function Inventory() {
 
           </Accordion.Body>
           </Accordion.Item>
-
-        
-            <Accordion.Item eventKey="1">
-              <Accordion.Header> <span style={{ color: 'red' }}>Number of url in which error occur: &nbsp; {errorlinks.length} </span> </Accordion.Header>
-              <Accordion.Body>
+          {
+          errorlinks.length > 0 &&
+          <Accordion.Item eventKey="1">
+            <Accordion.Header> <span style={{ color: 'red' }}>Number of url in which error occur: &nbsp; {errorlinks.length} </span> </Accordion.Header>
+            <Accordion.Body>
+              <div className="thread mt-2 mb-4" style={{ backgroundColor: loading2 ? 'rgb(11 109 91 / 99%)' : 'red', boxShadow: loading2 ? '#000000 8px 3px 55px -17px' : '0' }}>
                 <div className="container">
                   <div className="row">
-                    <div className="col-lg-12">
-                      <Button variant="secondary" className='me-4' onClick={autofetcherror}>
-                        Retry
-                      </Button>
-                      <input
-                        type="number"
-                        className='me-4 p-1'
-                        style={{ width: '70px' }}
-                        placeholder={index2}
-                        onChange={(e) => seterrorCustomIndex(e.target.value)}
-                      />
-
-                      <Button variant="secondary" className='me-4' onClick={seterrorindex}>
+                    <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                      <button className='startbtn me-3' onClick={autofetcherror}>Start</button>
+                      <input className='inputbtn' type="number" placeholder={errorindex} onChange={(e) => seterrorCustomIndex(e.target.value)} />
+                      <button className='startbtn ms-3' onClick={seterrorindex} >
                         Set Index
-                      </Button>
-
-
-                      <div className="container mt-2">
-                        <div className="row">
-                          <div className="col-lg-4 d-flex justify-content-center align-items-center">
-                            <h4>
-                              {errorindex}/{errorlinks.length}
-                            </h4>
-                            {errorloading && (
-                              <div className="loading-overlay ms-2">
-                                <Spinner animation="border" variant="primary" />
-                              </div>
-                            )}
-                          </div>
-                          <div className="col-lg-4 d-flex justify-content-center">
-                            <div style={{ height: 70, width: 70 }}>
-                              <CircularProgressbar value={(errorindex / errorlinks.length * 100)} text={`${(errorindex / errorlinks.length * 100).toFixed(0)}%`} />;
-                            </div>
-                          </div>
-                          <div className="col-lg-4 d-flex justify-content-start align-items-center">
-                            <h3>
-                              {errorspeed} s / URL
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                      {errurlerr && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                      <a href={errorlinks[errorindex]} target='_blank' style={{ color: errurlerr ? 'red' : '#1970ff' }}>{errorindex === errorlinks.length ? "Completed" : errorlinks[errorindex]}</a>
-                      <hr />
-                      <ol>
-                        {
-                          errorlinks.map((el) => (
-                            <li><a href={el} target='_blank'>{el}</a></li>
-                          ))
-                        }
-                      </ol>
+                      </button>
                     </div>
+
+                    <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                      <h4> {errorindex}/{errorlinks.length}</h4>
+                      <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                        <CircularProgressbar
+                          value={(errorindex / errorlinks.length * 100)}
+                          text={`${(errorindex / errorlinks.length * 100).toFixed(0)}%`}
+                        />;
+                      </div>
+                      <h4>
+                        {errorspeed} s / URL
+                      </h4>
+                    </div>
+
+                    <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
+                      {errurlerr && <p style={{ color: 'blue' }}>Error while fetching this url -</p>}
+                      <a href={errorlinks[errorindex]} target='_blank' style={{ color: errurlerr ? 'blue' : 'white' }}>{errorindex === errorlinks.length ? "Completed" : errorlinks[errorindex]}</a>
+                    </div>
+
                   </div>
                 </div>
-
-              </Accordion.Body>
-            </Accordion.Item>
-
+              </div>
+              <h4>Error urls List</h4>
+              <ol>
+                {
+                  errorlinks.map((el,index) => (
+                    <li key={index}><a href={el} target='_blank'>{el}</a></li>
+                  ))
+                }
+              </ol>
+            </Accordion.Body>
+          </Accordion.Item>
+        }
           <Accordion.Item eventKey="2">
             <Accordion.Header>Total Number of Updated Products : &nbsp;&nbsp; <span style={{ color: 'blue' }}>{data.length > 1 ? data.length : 0} </span></Accordion.Header>
             <Accordion.Body>
@@ -1391,6 +1390,14 @@ function Inventory() {
           </Accordion.Item>
         </Accordion>
         <hr />
+        <LineChart width={1600} className="bg-dark p-1 mb-4" height={300} data={data}>
+      {/* <CartesianGrid stroke="#ccc" /> */}
+      <XAxis dataKey="diff" />
+      <YAxis />
+      <Tooltip />
+      <Line type="monotone" dataKey="Product Cost" stroke="#1bb353" />
+      <Line type="monotone" dataKey="Current Price" stroke="red" />
+    </LineChart>
         <Outlet />
       </div>
   );

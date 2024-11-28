@@ -92,7 +92,6 @@ function App() {
     timerRef.current = setInterval(() => {
       setElapsedTime((prevTime) => prevTime + 1);
     }, 1000); // Increment every second
-
   };
   const stopTimer = async () => {
     settime(timerRef.current)
@@ -149,6 +148,7 @@ function App() {
     }
   };
   const geterrorurl = async () => {
+    console.log("get eror")
     try {
       let result = await fetch('https://belk.onrender.com/geterrorurl', {
         method: "GET",
@@ -156,6 +156,7 @@ function App() {
       })
       result = await result.json();
       seterrorLinks(result.links);
+      console.log("error call")
     } catch (err) {
       console.log(err)
     }
@@ -166,8 +167,6 @@ function App() {
   };
 
   const uploadinventoryfile = async () => {
-    console.log("upload file called")
-    alert('upload')
     setLoading(true)
     const formData = new FormData();
     formData.append('file', invfile);
@@ -341,7 +340,7 @@ function App() {
   };
   const autofetchData4 = async (link) => {
     try {
-      let result = await fetch('http://localhost:10000/inv/autofetchdata4', {
+      let result = await fetch('https://belk.onrender.com/inv/autofetchdata4', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -516,8 +515,10 @@ function App() {
   }
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const delay2 = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
   const autofetch = async () => {
+
     let index = index1;
     setLoading1(true);
     startTimer();
@@ -537,7 +538,8 @@ function App() {
         } else {
           setUrlError1(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
+          geterrorurl();
           index += 1;
         }
       } catch (err) {
@@ -566,7 +568,8 @@ function App() {
         } else {
           setUrlError2(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
+          geterrorurl();
           index += 1;
         }
       } catch (err) {
@@ -593,8 +596,9 @@ function App() {
         } else {
           setUrlError3(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch:", err);
@@ -620,8 +624,9 @@ function App() {
         } else {
           setUrlError4(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch:", err);
@@ -647,8 +652,9 @@ function App() {
         } else {
           setUrlError5(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch5:", err);
@@ -675,8 +681,9 @@ function App() {
         } else {
           setUrlError6(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
           index += 1;
+          geterrorurl();
         }
       } catch (err) {
         console.log("Error in autofetch6:", err);
@@ -704,7 +711,8 @@ function App() {
         } else {
           setUrlError7(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
+          geterrorurl();
           index += 1;
         }
       } catch (err) {
@@ -732,7 +740,8 @@ function App() {
         } else {
           setUrlError8(true);
           console.log("An error occurred.");
-          await delay(5000);
+          await delay(3000);
+          geterrorurl();
           index += 1;
         }
       } catch (err) {
@@ -786,30 +795,30 @@ function App() {
   const downloadInvontory = async (e) => {
     e.preventDefault();
     try {
-        setLoading(true)
-        const response = await axios({
-          url: 'https://belk.onrender.com/download-inventory', 
-          method: 'GET',
-          responseType: 'blob',
-        });
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'Updated_inventory.xlsx'); // File name
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setLoading(false)
-    }catch (error) {
+      setLoading(true)
+      const response = await axios({
+        url: 'https://belk.onrender.com/download-inventory',
+        method: 'GET',
+        responseType: 'blob',
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'Updated_inventory.xlsx'); // File name
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setLoading(false)
+    } catch (error) {
       console.error('Error downloading the file:', error);
       setLoading(false)
     }
   }
-  const startall = async() => {
+  const startall = async () => {
     autofetch();
-    await delay(2000)
+    await delay(1000)
     autofetch2();
-    await delay(2000)
+    await delay(1000)
     autofetch3();
     await delay(2000)
     autofetch4();
@@ -857,10 +866,6 @@ function App() {
           </svg></span>
         </div>
       </div>
-
-
-
-
       <Accordion className='mt-4' defaultActiveKey="0">
         <Accordion.Item eventKey="0">
           <Accordion.Header>Total Number of Product's URL: {links1 ? links1.length + links2.length + links3.length + links4.length + links5.length + links6.length + links7.length + links8.length : 0} &nbsp;&nbsp; || &nbsp;&nbsp; Total Number of urls fetched : {index1 + index2 + index3 + index4 + index5 + index6 + index7 + index8} &nbsp;&nbsp; || &nbsp;&nbsp; Remaining urls :  {links1 ? links1.length + links2.length + links3.length + links4.length + links5.length + links6.length + links7.length + links8.length - (index1 + index2 + index3 + index4 + index5 + index6 + index7 + index8) : 0} &nbsp;&nbsp; || &nbsp;&nbsp; Net Speed : &nbsp; <span style={{ color: 'red' }}> {(speed1 / 8).toFixed(1)} s / URL</span></Accordion.Header>
@@ -898,7 +903,7 @@ function App() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading2 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading2 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading2 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading2 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -931,7 +936,7 @@ function App() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading3 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading3 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading3 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading3 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -964,7 +969,7 @@ function App() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading4 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading4 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading4 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading4 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -997,7 +1002,7 @@ function App() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading5 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading5 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading5 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading5 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1030,7 +1035,7 @@ function App() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading6 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading6 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading6 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading6 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1062,7 +1067,7 @@ function App() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading7 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading7 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading7 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading7 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1094,7 +1099,7 @@ function App() {
               </div>
             </div>
 
-            <div className="thread mt-4" style={{ backgroundColor: loading8 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading8 ? '#000000 8px 3px 55px -17px' : '0' }}>
+            <div className="thread mt-2" style={{ backgroundColor: loading8 ? 'rgb(11 109 91 / 99%)' : 'black', boxShadow: loading8 ? '#000000 8px 3px 55px -17px' : '0' }}>
               <div className="container">
                 <div className="row">
                   <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
@@ -1133,65 +1138,46 @@ function App() {
           <Accordion.Item eventKey="1">
             <Accordion.Header> <span style={{ color: 'red' }}>Number of url in which error occur: &nbsp; {errorlinks.length} </span> </Accordion.Header>
             <Accordion.Body>
-              {/* --------first row of process */}
-              <div className="container">
-
-                <div className="row">
-                  <div className="col-lg-12">
-                    <Button variant="secondary" className='me-4' onClick={autofetcherror}>
-                      Retry
-                    </Button>
-                    <input
-                      type="number"
-                      className='me-4 p-1'
-                      style={{ width: '70px' }}
-                      placeholder={index2}
-                      onChange={(e) => seterrorCustomIndex(e.target.value)}
-                    />
-
-                    <Button variant="secondary" className='me-4' onClick={seterrorindex}>
-                      Set Index
-                    </Button>
-
-
-                    <div className="container mt-2">
-                      <div className="row">
-                        <div className="col-lg-4 d-flex justify-content-center align-items-center">
-                          <h4>
-                            {errorindex}/{errorlinks.length}
-                          </h4>
-                          {errorloading && (
-                            <div className="loading-overlay ms-2">
-                              <Spinner animation="border" variant="primary" />
-                            </div>
-                          )}
-                        </div>
-                        <div className="col-lg-4 d-flex justify-content-center">
-                          <div style={{ height: 50, width: 50 }}>
-                            <CircularProgressbar value={(errorindex / errorlinks.length * 100)} text={`${(errorindex / errorlinks.length * 100).toFixed(0)}%`} />;
-                          </div>
-                        </div>
-                        <div className="col-lg-4 d-flex justify-content-start align-items-center">
-                          <h3>
-                            {errorspeed} s / URL
-                          </h3>
-                        </div>
-                      </div>
+              <div className="thread mt-2 mb-4" style={{ backgroundColor: loading2 ? 'rgb(11 109 91 / 99%)' : 'red', boxShadow: loading2 ? '#000000 8px 3px 55px -17px' : '0' }}>
+                <div className="container">
+                  <div className="row">
+                    <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                      <button className='startbtn me-3' onClick={autofetcherror}>Start</button>
+                      <input className='inputbtn' type="number" placeholder={errorindex} onChange={(e) => seterrorCustomIndex(e.target.value)} />
+                      <button className='startbtn ms-3' onClick={seterrorindex} >
+                        Set Index
+                      </button>
                     </div>
-                    {errurlerr && <p style={{ color: 'red' }}>Error while fetching this url -</p>}
-                    <a href={errorlinks[errorindex]} target='_blank' style={{ color: errurlerr ? 'red' : '#1970ff' }}>{errorindex === errorlinks.length ? "Completed" : errorlinks[errorindex]}</a>
-                    <hr />
-                    <ol>
-                      {
-                        errorlinks.map((el) => (
-                          <li><a href={el} target='_blank'>{el}</a></li>
-                        ))
-                      }
-                    </ol>
+
+                    <div className="cus_row col-lg-3 col-md-6 col-sm-12 mt-2 mb-2">
+                      <h4> {errorindex}/{errorlinks.length}</h4>
+                      <div className='ms-4 me-4' style={{ height: 50, width: 50 }}>
+                        <CircularProgressbar
+                          value={(errorindex / errorlinks.length * 100)}
+                          text={`${(errorindex / errorlinks.length * 100).toFixed(0)}%`}
+                        />;
+                      </div>
+                      <h4>
+                        {errorspeed} s / URL
+                      </h4>
+                    </div>
+
+                    <div className="cus_row col-lg-6 col-md-6 col-sm-12 mt-2 mb-2">
+                      {errurlerr && <p style={{ color: 'blue' }}>Error while fetching this url -</p>}
+                      <a href={errorlinks[errorindex]} target='_blank' style={{ color: errurlerr ? 'blue' : 'white' }}>{errorindex === errorlinks.length ? "Completed" : errorlinks[errorindex]}</a>
+                    </div>
+
                   </div>
                 </div>
               </div>
-
+              <h4>Error urls List</h4>
+              <ol>
+                {
+                  errorlinks.map((el,index) => (
+                    <li key={index}><a href={el} target='_blank'>{el}</a></li>
+                  ))
+                }
+              </ol>
             </Accordion.Body>
           </Accordion.Item>
         }
