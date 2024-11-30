@@ -8,9 +8,7 @@ import Button from 'react-bootstrap/Button';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Link, Outlet } from 'react-router-dom';
-
 function App() {
-
   const [invfile, setInvFile] = useState('');
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
@@ -74,11 +72,12 @@ function App() {
   const stopRef = useRef(false);
   const timerRef = useRef(null);
   const [elapsedTime, setElapsedTime] = useState(0);
+  
   useEffect(() => {
     getinvurl();
     getserialnumber();
     getupdatedproduct();
-    geterrorurl()
+    geterrorurl();
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
@@ -727,9 +726,9 @@ function App() {
     stopRef.current = false;
     while (index < links8.length && !stopRef.current) {
       try {
-        const startTime = performance.now(); // Start the timer
-        const result = await autofetchData8(links7[index]);
-        const endTime = performance.now(); // End the timer
+        const startTime = performance.now(); 
+        const result = await autofetchData8(links8[index]);
+        const endTime = performance.now(); 
         const timeTaken1 = (endTime - startTime) / 1000;
         setSpeed8(timeTaken1.toFixed(1));
         console.log(`Thread-VIII || index: ${index} || result ${result}`);
@@ -861,7 +860,7 @@ function App() {
         }
         <div className="timer">
           Total updated Product : {totalProduct} <span onClick={getupdatedproduct}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="ms-4 bi bi-arrow-clockwise" viewBox="0 0 16 16">
-            <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
+            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" />
             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
           </svg></span>
         </div>
