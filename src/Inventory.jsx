@@ -28,7 +28,7 @@ function Inventory() {
 
   const getupdatedproduct = async () => {
     setLoading(true)
-    let result = await fetch('https://belk.onrender.com/mic/getupdatedproduct', {
+    let result = await fetch('https://brand-b.onrender.com/mic/getupdatedproduct', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -43,7 +43,7 @@ function Inventory() {
   };
   const remainingdata = async () => {
     setLoading(true)
-    let result = await fetch('https://belk.onrender.com/mic/remainingdata', {
+    let result = await fetch('https://brand-b.onrender.com/mic/remainingdata', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -227,7 +227,7 @@ setData(remaindata);
     return `${minutes} m ${seconds} s`;
   };
   const getserialnumber = async () => {
-    let result = await fetch('https://belk.onrender.com/mic/getserialnumber', {
+    let result = await fetch('https://brand-b.onrender.com/mic/getserialnumber', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' }
     });
@@ -247,7 +247,7 @@ setData(remaindata);
 
   const getinvurl = async () => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/getinvurl', {
+      let result = await fetch('https://brand-b.onrender.com/mic/getinvurl', {
         method: "GET",
         headers: { 'Content-Type': 'application/json' }
       })
@@ -266,7 +266,7 @@ setData(remaindata);
   };
   const geterrorurl = async () => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/geterrorurl', {
+      let result = await fetch('https://brand-b.onrender.com/mic/geterrorurl', {
         method: "GET",
         headers: { 'Content-Type': 'application/json' }
       })
@@ -286,7 +286,7 @@ setData(remaindata);
     const formData = new FormData();
     formData.append('file', invfile);
     try {
-      const response = await axios.post('https://belk.onrender.com/mic/uploadinvfile', formData, {
+      const response = await axios.post('https://brand-b.onrender.com/mic/uploadinvfile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -302,7 +302,7 @@ setData(remaindata);
     }
   };
   const settime = (time) => {
-    fetch('https://belk.onrender.com/mic/settime', {
+    fetch('https://brand-b.onrender.com/mic/settime', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ time: time + elapsedTime })
@@ -311,7 +311,7 @@ setData(remaindata);
   // ------setIndex----
   const setindex = async () => {
     const newIndex = parseInt(customIndex, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -323,7 +323,7 @@ setData(remaindata);
   };
   const setindex2 = async () => {
     const newIndex = parseInt(customIndex2, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex2', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex2', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -334,7 +334,7 @@ setData(remaindata);
   };
   const setindex3 = async () => {
     const newIndex = parseInt(customIndex3, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex3', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex3', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -345,7 +345,7 @@ setData(remaindata);
   };
   const setindex4 = async () => {
     const newIndex = parseInt(customIndex4, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex4', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex4', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -356,7 +356,7 @@ setData(remaindata);
   };
   const setindex5 = async () => {
     const newIndex = parseInt(customIndex5, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex5', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex5', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -367,7 +367,7 @@ setData(remaindata);
   };
   const setindex6 = async () => {
     const newIndex = parseInt(customIndex6, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex6', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex6', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -378,7 +378,7 @@ setData(remaindata);
   };
   const setindex7 = async () => {
     const newIndex = parseInt(customIndex7, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex7', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex7', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -389,7 +389,7 @@ setData(remaindata);
   };
   const setindex8 = async () => {
     const newIndex = parseInt(customIndex8, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex8', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex8', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -400,7 +400,7 @@ setData(remaindata);
   };
   const seterrorindex = async () => {
     const newIndex = parseInt(errorcustomIndex, 10);
-    let result = await fetch('https://belk.onrender.com/mic/seterrorindex', {
+    let result = await fetch('https://brand-b.onrender.com/mic/seterrorindex', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -412,7 +412,7 @@ setData(remaindata);
 
   const autofetchData = async (link) => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/autofetchdata1', {
+      let result = await fetch('https://brand-b.onrender.com/mic/autofetchdata1', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -427,7 +427,7 @@ setData(remaindata);
   };
   const autofetchData2 = async (link) => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/autofetchdata2', {
+      let result = await fetch('https://brand-b.onrender.com/mic/autofetchdata2', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -441,7 +441,7 @@ setData(remaindata);
   };
   const autofetchData3 = async (link) => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/autofetchdata3', {
+      let result = await fetch('https://brand-b.onrender.com/mic/autofetchdata3', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -455,7 +455,7 @@ setData(remaindata);
   };
   const autofetchData4 = async (link) => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/autofetchdata4', {
+      let result = await fetch('https://brand-b.onrender.com/mic/autofetchdata4', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -469,7 +469,7 @@ setData(remaindata);
   };
   const autofetchData5 = async (link) => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/autofetchdata5', {
+      let result = await fetch('https://brand-b.onrender.com/mic/autofetchdata5', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -483,7 +483,7 @@ setData(remaindata);
   };
   const autofetchData6 = async (link) => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/autofetchdata6', {
+      let result = await fetch('https://brand-b.onrender.com/mic/autofetchdata6', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -525,7 +525,7 @@ setData(remaindata);
   };
   const autofetchDataerror = async (link) => {
     try {
-      let result = await fetch('https://belk.onrender.com/mic/autofetchdata', {
+      let result = await fetch('https://brand-b.onrender.com/mic/autofetchdata', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ link: link })
@@ -540,7 +540,7 @@ setData(remaindata);
   };
   const setautoindex1 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -551,7 +551,7 @@ setData(remaindata);
   }
   const setautoindex2 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex2', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex2', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -562,7 +562,7 @@ setData(remaindata);
   }
   const setautoindex3 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex3', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex3', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -573,7 +573,7 @@ setData(remaindata);
   }
   const setautoindex4 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex4', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex4', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -584,7 +584,7 @@ setData(remaindata);
   }
   const setautoindex5 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex5', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex5', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -596,7 +596,7 @@ setData(remaindata);
 
   const setautoindex6 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex6', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex6', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -607,7 +607,7 @@ setData(remaindata);
   }
   const setautoindex7 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex7', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex7', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -619,7 +619,7 @@ setData(remaindata);
 
   const setautoindex8 = async (index) => {
     const newIndex = parseInt(index, 10);
-    let result = await fetch('https://belk.onrender.com/mic/setindex8', {
+    let result = await fetch('https://brand-b.onrender.com/mic/setindex8', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ start_index: newIndex })
@@ -907,7 +907,7 @@ setData(remaindata);
       if (ans === undefined || true) {
         setLoading(true)
         const response = await axios({
-          url: 'https://belk.onrender.com/mic/download-inventory', // Replace with your backend URL
+          url: 'https://brand-b.onrender.com/mic/download-inventory', // Replace with your backend URL
           method: 'GET',
           responseType: 'blob', // Important to get the response as a blob (binary data)
         });
